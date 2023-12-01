@@ -1,7 +1,27 @@
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
+import pandas as pd
+from torch.utils.data import DataLoader, Dataset
+from sklearn.preprocessing import StandardScaler
 
+class CustomData(Dataset):
+    def __init__(self, file_name):
+        file_out = pd.read_csv(file_name)
+        x = file_out.iloc[].values
+        y = file_out.iloc[].values
+
+        sc = StandardScaler()
+        x_train = sc.fit_transform(x)
+        y_train = y
+        
+        self.X_train = torch.tensor(x_train, dtype=torch.float32)
+        self.Y_train = torch.tensor(y_train)
+    
+    def __len__(self):
+        return len(self.Y_train)
+    
+    def __getitem__(self, index):
+        return self.X_train[index], self.Y_train[index]
 
 class MLP(nn.Module):
     def __init__(self):
@@ -9,7 +29,7 @@ class MLP(nn.Module):
     def forward(self, x):
         pass
 
-
+data = CustomData("")
 train_dataloader = DataLoader(training_data, batch_size=64, shuffle=True)
 test_dataloader = DataLoader(test_data, batch_size=64, shuffle=True)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
