@@ -8,9 +8,9 @@ from dataset import CustomData
 """
 MEILLEUR PARAM
 
-learning_rate = 0.001
-batch_size = 4
-dropout 0.1
+learning_rate = 0.0005
+batch_size = 12
+dropout 0
 """
 
 
@@ -35,7 +35,7 @@ for params in param_list:
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     criterion = nn.CrossEntropyLoss()
 
-    epochs = 30
+    epochs = 15
     print(f"Lr: {learning_rate}, dropout: {dropout}, batchsize: {batch_size}")
     for epoch in range(epochs):
         losses = []
@@ -75,8 +75,11 @@ for params in param_list:
     })
 max = 0
 model = None
+final_result = None
 for r in result:
-    if r["test_accuracy"] > max:
-        max = r["test_accuracy"]
+    if (r["test_accuracy"]+r["training_accuracy"])/2 > max:
+        max = (r["test_accuracy"]+r["training_accuracy"])/2
         model = r["model"]
+        final_result = r
+print(final_result)
 torch.save(model, "state_dict_model.pt")
