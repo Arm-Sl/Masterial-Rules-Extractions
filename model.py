@@ -1,4 +1,7 @@
 import torch.nn as nn
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+import torch
 
 class MLP(nn.Module):
     def __init__(self, dropout):
@@ -24,3 +27,10 @@ class MLP(nn.Module):
     
     def forward(self, x):
         return self.mlp(x)
+    
+    def predict(self, x):
+        x = StandardScaler().fit_transform(x.values)
+        print(x)
+        x = torch.tensor(x, dtype=torch.float32)
+        pred = self.forward(x)
+        return np.argmax(pred.cpu().detach().numpy(), axis=1)

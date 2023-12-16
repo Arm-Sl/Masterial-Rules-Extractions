@@ -6,17 +6,32 @@ import pandas as pd
 
 class CustomData(Dataset):
     def __init__(self, dataPath, labelPath):
-        file_out_data = pd.read_csv(dataPath, sep=" ")
-        file_out_label = pd.read_csv(labelPath, sep=" ")
-        x = file_out_data.iloc[0:len(file_out_data.axes[0]), 0:len(file_out_data.axes[1])].values
-        y = file_out_label.iloc[0:len(file_out_data.axes[0]), 0].values
+        self.file_out_data = pd.read_csv(dataPath, sep=" ")
+        self.file_out_label = pd.read_csv(labelPath, sep=" ")
+        self.x = self.file_out_data.iloc[0:len(self.file_out_data.axes[0]), 0:len(self.file_out_data.axes[1])].values
+        self.y = self.file_out_label.iloc[0:len(self.file_out_data.axes[0]), 0].values
         sc = StandardScaler()
-        x_train = sc.fit_transform(x)
-        y_train = y
+        self.x_train = sc.fit_transform(self.x)
+        y_train = self.y
         
-        self.X_train = torch.tensor(x_train, dtype=torch.float32)
+        self.X_train = torch.tensor(self.x_train, dtype=torch.float32)
         self.Y_train = torch.tensor(y_train)
-    
+
+    def getDataset(self):
+        categorical = self.file_out_data.select_dtypes(include=['object', 'category']).columns.tolist()
+        continuous = self.file_out_data.select_dtypes(include='number').columns.tolist()
+        return {
+            'X': self.file_out_data,
+            'Y': self.file_out_label,
+            'categorical': categorical,
+            'continuous': continuous,
+            'nbFeatures': len(self.file_out_data.columns),
+            'nbCategorical': len(categorical)
+        }
+
+    def getLine(self, index):
+        return self.file_out_data.iloc[[index]]
+
     def __len__(self):
         return len(self.Y_train)
     
