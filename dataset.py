@@ -1,8 +1,9 @@
 import math
-from torch.utils.data import Dataset, DataLoader
-from sklearn.preprocessing import StandardScaler
+from torch.utils.data import Dataset
 import torch
 import pandas as pd
+from scipy import stats
+import matplotlib.pyplot as plt
 
 class CustomData(Dataset):
     def __init__(self, dataPath, labelPath):
@@ -10,23 +11,26 @@ class CustomData(Dataset):
         self.file_out_label = pd.read_csv(labelPath, sep=" ")
         self.x = self.file_out_data.iloc[0:len(self.file_out_data.axes[0]), 0:len(self.file_out_data.axes[1])].values
         self.y = self.file_out_label.iloc[0:len(self.file_out_data.axes[0]), 0].values
-        sc = StandardScaler()
-        self.x_train = sc.fit_transform(self.x)
+        x_train = self.x
         y_train = self.y
-        
-        self.X_train = torch.tensor(self.x_train, dtype=torch.float32)
+        self.X_train = torch.tensor(x_train, dtype=torch.float32)
         self.Y_train = torch.tensor(y_train)
 
     def getDataset(self):
         categorical = self.file_out_data.select_dtypes(include=['object', 'category']).columns.tolist()
         continuous = self.file_out_data.select_dtypes(include='number').columns.tolist()
+        distribution = {}
+        for col in self.file_out_data.columns:
+            distribution[col] = stats.ecdf(self.file_out_data[col]).cdf
         return {
             'X': self.file_out_data,
             'Y': self.file_out_label,
             'categorical': categorical,
             'continuous': continuous,
             'nbFeatures': len(self.file_out_data.columns),
-            'nbCategorical': len(categorical)
+            'nbCategorical': len(categorical),
+            'distribution': distribution,
+            'className': self.file_out_label.columns[0]
         }
 
     def getLine(self, index):

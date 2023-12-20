@@ -4,6 +4,7 @@ from torch.utils.data import DataLoader
 from sklearn.model_selection import ParameterGrid
 from model import MLP
 from dataset import CustomData
+import numpy as np
 
 """
 MEILLEUR PARAM
