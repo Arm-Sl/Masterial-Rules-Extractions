@@ -6,11 +6,11 @@ from scipy.spatial.distance import sqeuclidean
 import numpy as np
 import pandas as pd
 import random
-
+import copy
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = MLP(0).to(device)
-model.load_state_dict(torch.load("./state_dict_model.pt"))
+model.load_state_dict(torch.load("./state_dict_model.pt", map_location=torch.device('cpu')))
 model.eval()
 #print(data.__getitem__(0))
 #predict = model(data.__getitem__(0)[0])
@@ -29,12 +29,9 @@ class LORE():
         pc = 0.5
         pm = 0.2
         Zsame, labelSame = self.geneticNeight(x, blackbox, self.fitnessSame, int(N/2), G, pc, pm)
-        #Znot, labelNot = self.geneticNeight(x, blackbox, self.fitnessNotSame, int(N/2), G, pc, pm)
-        #Z = Zsame + Znot
-        #labels = labelSame + labelNot
-        """for i in range(len(Z)):
-            print(Z[i])
-            print(labels[i])"""
+        Znot, labelNot = self.geneticNeight(x, blackbox, self.fitnessNotSame, int(N/2), G, pc, pm)
+        Z = Zsame + Znot
+        labels = labelSame + labelNot
 
         
     
@@ -51,37 +48,41 @@ class LORE():
         # Initialisation de la population P0 avec N copie de x
         P = []
         for j in range(N):
-            P.append({"data": x, "fitness": 0})
+            P.append({"data": copy.deepcopy(x), "fitness": 0})
         i = 0
-        self.evaluate(x, P, fitness, blackbox)
+        P = self.evaluate(x, P, fitness, blackbox)
         while( i < G):
             P = self.select(P)
             P = self.crossover(P, pc)
             P = self.mutate(P, pm)
-            self.evaluate(x, P, fitness, blackbox)
+            P = self.evaluate(x, P, fitness, blackbox)
             i += 1
+        P = self.select(P)
         Z = []
         label = []
-        print("END")
         for p in P:
-            Z.append(p["data"])
+            Z.append((p["data"],p["fitness"]))
             label.append(blackbox.predict(p["data"], self.device))
         return Z, label
     
     def evaluate(self, x: pd.DataFrame, pop, fitness, blackbox: MLP):
+        new_pop = []
         for p in pop:
-            p["fitness"] = fitness(x, p["data"], blackbox)
+            new_ind = p.copy()
+            new_ind["fitness"] = fitness(x, new_ind["data"], blackbox)
+            new_pop.append(new_ind)
+        return new_pop
 
     def select(self, pop) -> list:
         bestPop = []
         maxFitness = 0
         # Détermination du meilleur score de fitness
         for p in pop:
-            if p["fitness"] > maxFitness:
-                maxFitness = p["fitness"]
+            if round(p["fitness"],2) > maxFitness:
+                maxFitness = round(p["fitness"],2)
         # Sélection des individus
         for p in pop:
-            if p["fitness"] >= 1:
+            if round(p["fitness"], 2) == maxFitness:
                 bestPop.append(p)
         return bestPop
  
@@ -132,9 +133,10 @@ class LORE():
         new_pop = []
         for p in pop:
             mutated = p.copy()
-            for col in mutated["data"].columns:
-                if random.random() <= pm:
-                    mutated["data"].at[0, col] = self.mutate_gene(col)
+            if random.random() < pm:
+                cols = mutated["data"].columns
+                r = random.randint(0, len(cols)-1)
+                mutated["data"].at[0, cols[r]] = self.mutate_gene(cols[r])
             new_pop.append(mutated)
         return new_pop
 
@@ -199,7 +201,5 @@ data = CustomData("Data/diabetes/diabetes.csv", "Data/diabetes/labels_diabetes.c
 x1 = data.getLine(0).reset_index(drop=True)
 x2 = data.getLine(1).reset_index(drop=True)
 x3 = data.getLine(2).reset_index(drop=True)
-x4 = data.getLine(3).reset_index(drop=True)
-pop =[{"data":x1, "fitness":1}, {"data":x2, "fitness":2},{"data":x3, "fitness":3}, {"data":x4, "fitness":4}]
 lore = LORE(data.getDataset(), device)
-lore.lore(x2, model, 10)
+lore.lore(x2, model, 1000)
