@@ -29,7 +29,7 @@ class MLP(nn.Module):
         return self.mlp(x)
     
     def predict(self, x, device):
-        x = torch.tensor(x.values, dtype=torch.float32)
+        x = torch.tensor(x, dtype=torch.float32)
         pred = self.forward(x.to(device))
         return np.argmax(pred.cpu().detach().numpy(), axis=1)
         

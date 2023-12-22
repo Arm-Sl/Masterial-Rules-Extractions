@@ -1,37 +1,30 @@
 import lore
-
+import torch
+from model import MLP
 from prepare_dataset import *
 from neighbor_generator import *
 
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
 warnings.filterwarnings("ignore")
 
 
 def main():
-
-    # dataset_name = 'german_credit.csv'
-    path_data = 'diabetes/'
-    # dataset = prepare_german_dataset(dataset_name, path_data)
-
+    path_data = 'Data/diabetes/'
     dataset_name = 'diabetes.csv'
     class_name = 'labels_diabetes.csv'
     dataset = prepare_diabete_dataset(dataset_name, class_name, path_data)
-    print(dataset['label_encoder'][dataset['class_name']].classes_)
-    print(dataset['possible_outcomes'])
-
-    # dataset_name = 'adult.csv'
-    # dataset = prepare_adult_dataset(dataset_name, path_data)
 
     X, y = dataset['X'], dataset['y']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
-    blackbox = RandomForestClassifier(n_estimators=20)
-    blackbox.fit(X_train, y_train)
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    blackbox = MLP(0).to(device)
+    blackbox.load_state_dict(torch.load("./state_dict_model.pt", map_location=torch.device('cpu')))
+    blackbox.eval()
 
     X2E = X_test
-    y2E = blackbox.predict(X2E)
+    y2E = blackbox.predict(X2E, device)
     y2E = np.asarray([dataset['possible_outcomes'][i] for i in y2E])
 
     idx_record2explain = 0
@@ -45,7 +38,6 @@ def main():
 
     dfX2E = build_df2explain(blackbox, X2E, dataset).to_dict('records')
     dfx = dfX2E[idx_record2explain]
-    # x = build_df2explain(blackbox, X2E[idx_record2explain].reshape(1, -1), dataset).to_dict('records')[0]
 
     print('x = %s' % dfx)
     print('r = %s --> %s' % (explanation[0][1], explanation[0][0]))
