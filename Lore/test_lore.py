@@ -1,10 +1,9 @@
 import lore
-
+import torch
+from model import MLP
 from prepare_dataset import *
 from neighbor_generator import *
-from ..model import MLP
 
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
 warnings.filterwarnings("ignore")
@@ -24,14 +23,8 @@ def main():
     blackbox.load_state_dict(torch.load("./state_dict_model.pt", map_location=torch.device('cpu')))
     blackbox.eval()
 
-    X, y = dataset['X'], dataset['y']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-    blackbox = RandomForestClassifier(n_estimators=20)
-    blackbox.fit(X_train, y_train)
-
     X2E = X_test
-    y2E = blackbox.predict(X2E)
+    y2E = blackbox.predict(X2E, device)
     y2E = np.asarray([dataset['possible_outcomes'][i] for i in y2E])
 
     idx_record2explain = 0
@@ -45,7 +38,6 @@ def main():
 
     dfX2E = build_df2explain(blackbox, X2E, dataset).to_dict('records')
     dfx = dfX2E[idx_record2explain]
-    # x = build_df2explain(blackbox, X2E[idx_record2explain].reshape(1, -1), dataset).to_dict('records')[0]
 
     print('x = %s' % dfx)
     print('r = %s --> %s' % (explanation[0][1], explanation[0][0]))

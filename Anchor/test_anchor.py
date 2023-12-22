@@ -1,5 +1,6 @@
 from anchor import anchor_tabular
-
+import torch
+from model import MLP
 from ..prepare_dataset import *
 from ..neighbor_generator import *
 
@@ -11,15 +12,18 @@ warnings.filterwarnings("ignore")
 
 def main():
 
-    dataset_name = 'diabete.csv'
-    path_data = '../Data/diabetes/'
-    dataset = prepare_diabete_dataset(dataset_name, path_data)
+    path_data = 'Data/diabetes/'
+    dataset_name = 'diabetes.csv'
+    class_name = 'labels_diabetes.csv'
+    dataset = prepare_diabete_dataset(dataset_name, class_name, path_data)
 
     X, y = dataset['X'], dataset['y']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-    blackbox = RandomForestClassifier(n_estimators=20)
-    blackbox.fit(X_train, y_train)
+    
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    blackbox = MLP(0).to(device)
+    blackbox.load_state_dict(torch.load("./state_dict_model.pt", map_location=torch.device('cpu')))
+    blackbox.eval()
 
     X2E = X_test
     idx_record2explain = 9
