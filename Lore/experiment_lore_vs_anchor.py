@@ -2,8 +2,8 @@ import re
 import lore
 import datetime
 
-from prepare_dataset import *
-from neighbor_generator import *
+from Anchor.prepare_dataset import *
+from Anchor.neighbor_generator import *
 
 from anchor import anchor_tabular
 from statistics import mode

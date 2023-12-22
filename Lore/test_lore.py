@@ -1,8 +1,8 @@
 import lore
 import torch
-from model import MLP
-from prepare_dataset import *
-from neighbor_generator import *
+from Anchor.model import MLP
+from Anchor.prepare_dataset import *
+from Anchor.neighbor_generator import *
 
 from sklearn.model_selection import train_test_split
 

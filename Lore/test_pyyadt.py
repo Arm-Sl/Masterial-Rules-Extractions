@@ -2,8 +2,8 @@ import random
 import pyyadt
 
 from PIL import Image
-from prepare_dataset import *
-from neighbor_generator import *
+from Anchor.prepare_dataset import *
+from Anchor.neighbor_generator import *
 
 from sklearn.datasets import make_moons
 from sklearn.preprocessing import StandardScaler

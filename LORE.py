@@ -1,4 +1,4 @@
-from model import MLP
+from Anchor.model import MLP
 from dataset import CustomData
 import torch
 from scipy.spatial.distance import sqeuclidean

@@ -1,6 +1,6 @@
-from util import *
-from distance_functions import *
-from neighbor_generator import generate_random_data
+from Anchor.util import *
+from Anchor.distance_functions import *
+from Anchor.neighbor_generator import generate_random_data
 
 from sys import maxint
 from scipy.optimize import least_squares

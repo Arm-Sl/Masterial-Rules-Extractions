@@ -1,8 +1,8 @@
 from anchor import anchor_tabular
 import torch
 from model import MLP
-from ..prepare_dataset import *
-from ..neighbor_generator import *
+from prepare_dataset import *
+from neighbor_generator import *
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split

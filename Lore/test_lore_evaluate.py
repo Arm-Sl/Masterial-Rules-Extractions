@@ -1,7 +1,7 @@
 import lore
 
-from prepare_dataset import *
-from neighbor_generator import *
+from Anchor.prepare_dataset import *
+from Anchor.neighbor_generator import *
 from evaluation import evaluate_explanation
 
 from sklearn.ensemble import RandomForestClassifier

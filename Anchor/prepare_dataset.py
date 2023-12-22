@@ -1,4 +1,4 @@
-from Lore.util import *
+from util import *
 
 
 def prepare_german_dataset(filename, path_data):
