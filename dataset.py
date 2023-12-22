@@ -34,7 +34,7 @@ class CustomData(Dataset):
         }
 
     def getLine(self, index):
-        return self.file_out_data.iloc[[index]]
+        return self.file_out_data.iloc[[index]].reset_index(drop=True)
 
     def __len__(self):
         return len(self.Y_train)

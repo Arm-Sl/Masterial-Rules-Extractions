@@ -1,12 +1,13 @@
 from model import MLP
 from dataset import CustomData
 import torch
-import torch.nn as nn
 from scipy.spatial.distance import sqeuclidean
 import numpy as np
 import pandas as pd
 import random
 import copy
+import yadt
+import pickle
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = MLP(0).to(device)
@@ -32,11 +33,31 @@ class LORE():
         Znot, labelNot = self.geneticNeight(x, blackbox, self.fitnessNotSame, int(N/2), G, pc, pm)
         Z = Zsame + Znot
         labels = labelSame + labelNot
-
+        self.buildTree(Z, labels)
         
     
-    def buildTree(self, z):
-        pass
+    def buildTree(self, z, labels):
+        predict = []
+        for l in labels:
+            if l == [0]:
+                predict.append(pd.DataFrame(["No_Diabete"],columns=[self.dataset["className"]]))
+            elif l == [1]:
+                predict.append(pd.DataFrame(["Diabete"], columns=[self.dataset["className"]]))
+        y = pd.concat(predict).reset_index(drop=True)
+        x = pd.concat(z).reset_index(drop=True)
+        df = pd.concat([x,y], axis=1)
+        
+
+        df1 = pd.concat([self.dataset["X"],self.dataset["Y"]], axis=1)
+        md = yadt.meta_data(df)
+        #yadt.to_yadt(x.values, md, y=y.squeeze(), filenames='np_dataset.names', filedata='np_dataset.data.gz')
+        clf_yadt = yadt.YaDTClassifier(md, options='-m 8 -grpure')
+        #clf_yadt.fit(self.dataset["X"], self.dataset["Y"].squeeze())
+        clf_yadt.fit(x, y.squeeze())
+        pickle.dump(clf_yadt, open("clf_yadt2.p", "wb"))
+
+        new_cfl = pickle.load(open("clf_yadt2.p", "rb"))
+        print(new_cfl.get_tree())
 
     def extractRule(self, tree, x):
         pass
@@ -61,7 +82,7 @@ class LORE():
         Z = []
         label = []
         for p in P:
-            Z.append((p["data"],p["fitness"]))
+            Z.append(p["data"])
             label.append(blackbox.predict(p["data"], self.device))
         return Z, label
     
@@ -198,8 +219,8 @@ class LORE():
     
 
 data = CustomData("Data/diabetes/diabetes.csv", "Data/diabetes/labels_diabetes.csv")
-x1 = data.getLine(0).reset_index(drop=True)
-x2 = data.getLine(1).reset_index(drop=True)
-x3 = data.getLine(2).reset_index(drop=True)
+x1 = data.getLine(0)
+x2 = data.getLine(1)
+x3 = data.getLine(2)
 lore = LORE(data.getDataset(), device)
-lore.lore(x2, model, 1000)
+lore.lore(x1, model, 2000)
