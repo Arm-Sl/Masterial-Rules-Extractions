@@ -45,7 +45,6 @@ def fitness_sso(x0, bb, alpha1, alpha2, eta, discrete, continuous, class_name, i
     y0 = bb.predict(np.asarray(x0).reshape(1, -1), device)[0]
     y1 = bb.predict(np.asarray(x1).reshape(1, -1), device)[0]
     target_similarity = 1.0 if y0 == y1 else 0.0
-    
     evaluation = alpha1 * record_similarity + alpha2 * target_similarity
     return evaluation,
 
@@ -184,7 +183,6 @@ def generate_data(x, feature_values, bb, discrete, continuous, class_name, idx_f
                                     tournsize=tournsize)
         population, halloffame, logbook = fit(toolbox_sso, population_size=size_sso, halloffame_ratio=halloffame_ratio, 
                                               cxpb=cxpb, mutpb=mutpb, ngen=ngen, verbose=False)
-
         Xsso = get_oversample(population, halloffame)
         Xgp.append(Xsso)
     
@@ -197,6 +195,7 @@ def generate_data(x, feature_values, bb, discrete, continuous, class_name, idx_f
         population, halloffame, logbook = fit(toolbox_sdo, population_size=size_sdo, halloffame_ratio=halloffame_ratio, 
                                               cxpb=cxpb, mutpb=mutpb, ngen=ngen, verbose=False)
 
+        
         Xsdo = get_oversample(population, halloffame)
         Xgp.append(Xsdo)
 

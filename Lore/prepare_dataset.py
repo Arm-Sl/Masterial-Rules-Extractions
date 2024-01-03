@@ -5,8 +5,8 @@ def prepare_diabete_dataset(filename, label_name, path_data):
     valeur = pd.read_csv(path_data + filename, delimiter=' ', skipinitialspace=True)
     label = pd.read_csv(path_data + label_name)
     df = pd.concat([valeur, label], axis=1)
-    columns = ["Pregnancies", "Glucose", "BloodPressure", "SkinThickness", "Insulin", "BMI", "DiabetesPedigreeFunction", "Age", "Outcome"]
-
+    #columns = ["Pregnancies", "Glucose", "BloodPressure", "SkinThickness", "Insulin", "BMI", "DiabetesPedigreeFunction", "Age", "Outcome"]
+    columns = df.columns
     df = df[columns]
     columns = df.columns.tolist()
     columns = columns[-1:] + columns[:-1]

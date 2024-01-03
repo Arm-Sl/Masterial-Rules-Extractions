@@ -14,19 +14,18 @@ def main():
     dataset_name = 'diabetes.csv'
     class_name = 'labels_diabetes.csv'
     dataset = prepare_diabete_dataset(dataset_name, class_name, path_data)
-
     X, y = dataset['X'], dataset['y']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    blackbox = MLP(0).to(device)
-    blackbox.load_state_dict(torch.load("./state_dict_model.pt", map_location=torch.device('cpu')))
+    blackbox = MLP(8, 2).to(device)
+    blackbox.load_state_dict(torch.load("./diabetes.pt"))
     blackbox.eval()
 
     X2E = X_test
     y2E = blackbox.predict(X2E, device)
     y2E = np.asarray([dataset['possible_outcomes'][i] for i in y2E])
-
+    
     idx_record2explain = 0
 
     explanation, infos = lore.explain(idx_record2explain, X2E, dataset, blackbox,

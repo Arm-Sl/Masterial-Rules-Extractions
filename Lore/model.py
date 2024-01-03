@@ -4,7 +4,7 @@ from sklearn.preprocessing import StandardScaler
 import torch
 
 class MLP(nn.Module):
-    def __init__(self, dropout):
+    def __init__(self, input_size, nb_classes, dropout = 0,):
         super(MLP, self).__init__()
         self.mlp = nn.Sequential(
             nn.Linear(8, 50),
@@ -14,6 +14,18 @@ class MLP(nn.Module):
             nn.ReLU(),
             nn.Dropout(dropout),
             nn.Linear(100, 500),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(500, 750),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(750, 1000),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(1000, 750),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(750, 500),
             nn.ReLU(),
             nn.Dropout(dropout),
             nn.Linear(500, 100),
@@ -27,6 +39,7 @@ class MLP(nn.Module):
     
     def forward(self, x):
         return self.mlp(x)
+        
     
     def predict(self, x, device):
         x = torch.tensor(x, dtype=torch.float32)
