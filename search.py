@@ -2,16 +2,32 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from sklearn.model_selection import ParameterGrid
-from Lore.model import MLP
-from dataset import DiabetesDataset
+from model import MLP
+from dataset import CustomDataset
 import numpy as np
 
 """
-MEILLEUR PARAM
+MEILLEUR PARAM DIABETES
 
 learning_rate = 0.001
 batch_size = 16
 dropout 0
+"""
+
+"""
+MEILLEUR PARAM BREAST CANCER
+
+learning_rate = 0.01
+batch_size = 16
+dropout 0.1
+"""
+
+"""
+MEILLEUR PARAM HEART
+
+learning_rate = 0.01
+batch_size = 16
+dropout 0.05
 """
 
 """param_grid = {
@@ -19,18 +35,29 @@ dropout 0
     "dropout": [0, 0.05, 0.1],
     "batch_size": [4, 8, 12, 16]
 }"""
+
 param_grid = {
     "learning_rate": [0.001],
     "dropout": [0],
     "batch_size": [16]
 }
-train_data = DiabetesDataset("Data/diabetes/diabetes.csv", "Data/diabetes/labels_diabetes.csv", split="Train")
-valid_data = DiabetesDataset("Data/diabetes/diabetes.csv", "Data/diabetes/labels_diabetes.csv", split="Validation")
-test_data = DiabetesDataset("Data/diabetes/diabetes.csv", "Data/diabetes/labels_diabetes.csv", split="Test")
+
+# A modifier pour choisir le dataset
+path_model = "./models/diabetes.pt"
+path_data = "Data/diabetes/diabetes.csv"
+path_labels = "Data/diabetes/labels_diabetes.csv"
+nb_features = 8
+nb_classe = 2
+
+train_data = CustomDataset(path_data, path_labels, split="Train")
+valid_data = CustomDataset(path_data, path_labels, split="Validation")
+test_data = CustomDataset(path_data, path_labels, split="Test")
 
 param_list = list(ParameterGrid(param_grid))
 min_loss = np.inf
 best_dropout = 0
+best_learning_rate = 0
+best_batch_size = 0
 for params in param_list:
     learning_rate = params["learning_rate"]
     dropout = params["dropout"]
@@ -41,11 +68,10 @@ for params in param_list:
         
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    model = MLP(8, 2, dropout).to(device)
+    model = MLP(nb_features, nb_classe, dropout).to(device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay = 0.000001)
     loss_fn = nn.CrossEntropyLoss()
-
     
     training_losses, valid_losses, accs = [],[],[]
     epochs = 25
@@ -88,14 +114,19 @@ for params in param_list:
         
         if valid_loss <= min_loss:
             print("Saving Model {:.4f} ---> {:.4f}".format(min_loss, valid_loss))
-            print(learning_rate, batch_size, dropout)
+            best_learning_rate = learning_rate
+            best_batch_size = batch_size
             best_dropout = dropout
-            torch.save(model.state_dict(), "diabetes.pt")
+            torch.save(model.state_dict(), path_model)
             min_loss = valid_loss
 
+print("batch_size", best_batch_size)
+print("learning_rate", best_learning_rate)
+print("dropout", best_dropout)
+
 test_loader = DataLoader(test_data, batch_size = 1, shuffle = True)
-model = MLP(8, 2, best_dropout).to(device)
-model.load_state_dict(torch.load("./diabetes.pt"))
+model = MLP(nb_features, nb_classe, best_dropout).to(device)
+model.load_state_dict(torch.load(path_model))
 total_correct = 0
 with torch.no_grad():
     model.eval()
