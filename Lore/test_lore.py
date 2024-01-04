@@ -4,8 +4,8 @@ sys.path.append('../Masterial')
 import lore
 import torch
 import model
-from prepare_dataset import *
-from neighbor_generator import *
+from Lore.prepare_dataset import *
+from Lore.neighbor_generator import *
 import json
 from sklearn.model_selection import train_test_split
 
