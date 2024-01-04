@@ -3,84 +3,142 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from sklearn.model_selection import ParameterGrid
 from model import MLP
-from dataset import CustomData
+from dataset import CustomDataset
 import numpy as np
 
 """
-MEILLEUR PARAM
+MEILLEUR PARAM DIABETES
 
-learning_rate = 0.0005
-batch_size = 12
+learning_rate = 0.001
+batch_size = 16
 dropout 0
 """
 
+"""
+MEILLEUR PARAM BREAST CANCER
+
+learning_rate = 0.01
+batch_size = 16
+dropout 0.1
+"""
+
+"""
+MEILLEUR PARAM HEART
+
+learning_rate = 0.01
+batch_size = 16
+dropout 0.05
+"""
+
+"""param_grid = {
+    "learning_rate": [0.1, 0.01, 0.001, 0.0001],
+    "dropout": [0, 0.05, 0.1],
+    "batch_size": [4, 8, 12, 16]
+}"""
 
 param_grid = {
-    "learning_rate": [0.001, 0.01, 0.005, 0.0005],
-    "dropout": [0, 0.1, 0.2, 0.3],
-    "batch_size": [4, 8, 12, 16]
+    "learning_rate": [0.001],
+    "dropout": [0],
+    "batch_size": [16]
 }
+
+# A modifier pour choisir le dataset
+path_model = "./models/diabetes.pt"
+path_data = "Data/diabetes/diabetes.csv"
+path_labels = "Data/diabetes/labels_diabetes.csv"
+nb_features = 8
+nb_classe = 2
+
+train_data = CustomDataset(path_data, path_labels, split="Train")
+valid_data = CustomDataset(path_data, path_labels, split="Validation")
+test_data = CustomDataset(path_data, path_labels, split="Test")
+
 param_list = list(ParameterGrid(param_grid))
-result = []
+min_loss = np.inf
+best_dropout = 0
+best_learning_rate = 0
+best_batch_size = 0
 for params in param_list:
     learning_rate = params["learning_rate"]
     dropout = params["dropout"]
     batch_size = params["batch_size"]
-    data = CustomData("Data/diabetes/diabetes.csv", "Data/diabetes/labels_diabetes.csv")
-    training_data, test_data = torch.utils.data.random_split(data, data.getRepartition())
-    train_dataloader = DataLoader(training_data, batch_size=batch_size, shuffle=True)
-    test_dataloader = DataLoader(test_data, batch_size=batch_size, shuffle=True)
+    train_loader = DataLoader(train_data, batch_size = batch_size, shuffle = True)
+    valid_loader = DataLoader(valid_data, batch_size = batch_size, shuffle = True)
+    
+        
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    model = MLP(dropout).to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-    criterion = nn.CrossEntropyLoss()
+    model = MLP(nb_features, nb_classe, dropout).to(device)
 
-    epochs = 15
-    print(f"Lr: {learning_rate}, dropout: {dropout}, batchsize: {batch_size}")
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay = 0.000001)
+    loss_fn = nn.CrossEntropyLoss()
+    
+    training_losses, valid_losses, accs = [],[],[]
+    epochs = 25
+
     for epoch in range(epochs):
-        losses = []
         model.train()
-        for i, data in enumerate(train_dataloader, 0):
-            x, y = data
+        training_loss = 0
+        for i, (data, labels) in enumerate(train_loader):
             optimizer.zero_grad()
-
-            x = x.to(device).float()
-            y = y.to(device)
-            output = model(x)
-            loss = criterion(output, y)
+            data, labels = data.to(device), labels.to(device)
+            outputs = model(data)
+            loss = loss_fn(outputs, labels)
             loss.backward()
-            losses.append(loss.item())
             optimizer.step()
-        #print('Epoch %d | Loss %6.2f' % (epoch+1, sum(losses)/len(losses)))
-    print(f'Accuracy of the network on the training data: {100 * (1 - (sum(losses)/len(losses)))} %')
-    total = 0
-    correct = 0
-    with torch.no_grad():
-        for i, data in enumerate(test_dataloader,0):
-            x, y = data
-            x = x.to(device).float()
-            y = y.to(device)
-            outputs = model(x)
-            _, predicted = torch.max(outputs.data, 1)
-            total += y.size(0)
-            correct += (predicted == y).sum().item()
-    print(f'Accuracy of the network on the test data: {100 * correct / total} %')
-    result.append({
-        "model": model.state_dict(),
-        "learning_rate": learning_rate,
-        "batch_size": batch_size,
-        "dropout": dropout,
-        "training_accuracy": 1 - (sum(losses)/len(losses)),
-        "test_accuracy": correct / total
-    })
-max = 0
-model = None
-final_result = None
-for r in result:
-    if (r["test_accuracy"]+r["training_accuracy"])/2 > max:
-        max = (r["test_accuracy"]+r["training_accuracy"])/2
-        model = r["model"]
-        final_result = r
-print(final_result)
-torch.save(model, "state_dict_model.pt")
+                
+            training_loss += loss.item()
+        
+        training_losses.append(training_loss)
+
+        model.eval()
+        valid_loss = 0
+        acc = 0
+        with torch.no_grad():
+            for i, (data, labels) in enumerate(valid_loader):
+                data, labels = data.to(device), labels.to(device)
+                outputs = model(data)
+                loss = loss_fn(outputs, labels)
+                    
+                valid_loss += loss.item()
+                    
+                _, predicted = outputs.topk(1, dim = 1)
+                eq = predicted == labels.view(-1, 1)
+                acc += eq.sum().item()
+                    
+            valid_losses.append(valid_loss)
+            accs.append((acc/len(valid_data)) * 100)
+
+        print('epoch : {}, train loss : {:.4f}, valid loss : {:.4f}, valid acc : {:.2f}%'\
+            .format(epoch+1, training_loss, valid_loss, (acc/len(valid_data)) * 100))
+        
+        if valid_loss <= min_loss:
+            print("Saving Model {:.4f} ---> {:.4f}".format(min_loss, valid_loss))
+            best_learning_rate = learning_rate
+            best_batch_size = batch_size
+            best_dropout = dropout
+            torch.save(model.state_dict(), path_model)
+            min_loss = valid_loss
+
+print("batch_size", best_batch_size)
+print("learning_rate", best_learning_rate)
+print("dropout", best_dropout)
+
+test_loader = DataLoader(test_data, batch_size = 1, shuffle = True)
+model = MLP(nb_features, nb_classe, best_dropout).to(device)
+model.load_state_dict(torch.load(path_model))
+total_correct = 0
+with torch.no_grad():
+    model.eval()
+    for i, (data, labels) in enumerate(test_loader):
+        data, labels = data.to(device), labels.to(device)
+        yhat = model(data)
+        
+        _, predicted = yhat.topk(1, dim = 1)
+        eq = predicted == labels.view(-1, 1)
+        total_correct += eq.sum().item()
+        
+        print("Predicted Value: {}..\tTrue Value: {}..".format(predicted.item(), labels.item()))
+
+print("Score: {}/{}".format(total_correct, len(test_data)))
+print("Percentage Correct: {:.2f}%".format((total_correct / len(test_data)) * 100))

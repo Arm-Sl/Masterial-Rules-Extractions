@@ -1,7 +1,7 @@
 import math
 import warnings
 import scipy.stats as st
-
+import torch
 from util import *
 from deap import base, creator, tools, algorithms
 
@@ -41,11 +41,10 @@ def fitness_sso(x0, bb, alpha1, alpha2, eta, discrete, continuous, class_name, i
     # zero if is too similar
     sim_ratio = 1.0 - distance_function(x0d, x1d, discrete, continuous, class_name)
     record_similarity = 0.0 if sim_ratio >= eta else sim_ratio
-    
-    y0 = bb.predict(np.asarray(x0).reshape(1, -1))[0]
-    y1 = bb.predict(np.asarray(x1).reshape(1, -1))[0]
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    y0 = bb.predict(np.asarray(x0).reshape(1, -1), device)[0]
+    y1 = bb.predict(np.asarray(x1).reshape(1, -1), device)[0]
     target_similarity = 1.0 if y0 == y1 else 0.0
-    
     evaluation = alpha1 * record_similarity + alpha2 * target_similarity
     return evaluation,
 
@@ -58,9 +57,9 @@ def fitness_sdo(x0, bb, alpha1, alpha2, eta, discrete, continuous, class_name, i
     # zero if is too similar
     sim_ratio = 1.0 - distance_function(x0d, x1d, discrete, continuous, class_name)
     record_similarity = 0.0 if sim_ratio >= eta else sim_ratio
-
-    y0 = bb.predict(np.asarray(x0).reshape(1, -1))[0]
-    y1 = bb.predict(np.asarray(x1).reshape(1, -1))[0]
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    y0 = bb.predict(np.asarray(x0).reshape(1, -1), device)[0]
+    y1 = bb.predict(np.asarray(x1).reshape(1, -1), device)[0]
     target_similarity = 1.0 if y0 != y1 else 0.0
 
     evaluation = alpha1 * record_similarity + alpha2 * target_similarity
@@ -75,9 +74,9 @@ def fitness_dso(x0, bb, alpha1, alpha2, eta, discrete, continuous, class_name, i
     # zero if is too dissimilar
     sim_ratio = 1.0 - distance_function(x0d, x1d, discrete, continuous, class_name)
     record_similarity = 0.0 if sim_ratio <= eta else 1.0 - sim_ratio
-    
-    y0 = bb.predict(np.asarray(x0).reshape(1, -1))[0]
-    y1 = bb.predict(np.asarray(x1).reshape(1, -1))[0]
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    y0 = bb.predict(np.asarray(x0).reshape(1, -1), device)[0]
+    y1 = bb.predict(np.asarray(x1).reshape(1, -1), device)[0]
     target_similarity = 1.0 if y0 == y1 else 0.0
     
     evaluation = alpha1 * record_similarity + alpha2 * target_similarity
@@ -92,9 +91,9 @@ def fitness_ddo(x0, bb, alpha1, alpha2, eta, discrete, continuous, class_name, i
     # zero if is too dissimilar
     sim_ratio = 1.0 - distance_function(x0d, x1d, discrete, continuous, class_name)
     record_similarity = 0.0 if sim_ratio <= eta else 1.0 - sim_ratio
-    
-    y0 = bb.predict(np.asarray(x0).reshape(1, -1))[0]
-    y1 = bb.predict(np.asarray(x1).reshape(1, -1))[0]
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    y0 = bb.predict(np.asarray(x0).reshape(1, -1), device)[0]
+    y1 = bb.predict(np.asarray(x1).reshape(1, -1), device)[0]
     target_similarity = 1.0 if y0 != y1 else 0.0
     
     evaluation = alpha1 * record_similarity + alpha2 * target_similarity
@@ -184,7 +183,6 @@ def generate_data(x, feature_values, bb, discrete, continuous, class_name, idx_f
                                     tournsize=tournsize)
         population, halloffame, logbook = fit(toolbox_sso, population_size=size_sso, halloffame_ratio=halloffame_ratio, 
                                               cxpb=cxpb, mutpb=mutpb, ngen=ngen, verbose=False)
-
         Xsso = get_oversample(population, halloffame)
         Xgp.append(Xsso)
     
@@ -197,6 +195,7 @@ def generate_data(x, feature_values, bb, discrete, continuous, class_name, idx_f
         population, halloffame, logbook = fit(toolbox_sdo, population_size=size_sdo, halloffame_ratio=halloffame_ratio, 
                                               cxpb=cxpb, mutpb=mutpb, ngen=ngen, verbose=False)
 
+        
         Xsdo = get_oversample(population, halloffame)
         Xgp.append(Xsdo)
 
