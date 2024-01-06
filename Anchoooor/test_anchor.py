@@ -7,6 +7,7 @@ from prepare_dataset import *
 from neighbor_generator import *
 import json
 from anchor import anchor_tabular
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
 warnings.filterwarnings("ignore")
@@ -24,10 +25,6 @@ class NpEncoder(json.JSONEncoder):
         return super(NpEncoder, self).default(obj)
 
 def main():
-
-    path_data = "Data/breast-cancer"
-    name_json_info = "breast-cancer_info.json"
-    name_json_rules = "breast-cancer_rules.json"
     name_model = "breast_cancer.pt"
     model_dropout = 0.1
     model_input_size = 30
@@ -35,12 +32,6 @@ def main():
     dataset = prepare_breast_cancer_dataset()
 
     features = dataset["columns"][1:]    #####Json
-    info_json = {"class_values": dataset["possible_outcomes"],
-                 "feature_names": features}
-    rules_json = []
-    with open(os.path.join("./json", name_json_info), 'w') as f:
-        json.dump(info_json, f, cls=NpEncoder)
-
 
     X, y = dataset['X'], dataset['y']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
@@ -73,7 +64,6 @@ def main():
     # Create Anchor Explainer
     explainer = anchor_tabular.AnchorTabularExplainer(possible_outcomes, feature_names, X2E, categorical_names)
     explainer.fit(X_train, y_train, X_test, y_test)
-
     print('Prediction: ', possible_outcomes[blackbox.predict(X2E[idx_record2explain].reshape(1, -1))[0]])
 
     exp, info = explainer.explain_instance(X2E[idx_record2explain].reshape(1, -1), blackbox.predict, threshold=0.95)
@@ -87,7 +77,6 @@ def main():
     print('Anchor test coverage: %.2f' % (fit_anchor.shape[0] / float(X2E.shape[0])))
     print('Anchor test precision: %.2f' % (np.mean(blackbox.predict(X2E[fit_anchor]) ==
                                                    blackbox.predict(X2E[idx_record2explain].reshape(1, -1)))))
-
     print(blackbox.predict(info['state']['raw_data']))
 
 

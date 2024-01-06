@@ -1,6 +1,0 @@
-random_grid: {'criterion': ['gini', 'entropy'], 'max_depth': [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, None], 'min_samples_leaf': [1, 2, 4, 6, 8, 10], 'min_samples_split': [2, 5, 10, 15, 20, 25, 30]} 
- best_random: DecisionTreeClassifier(max_depth=4, min_samples_leaf=2, random_state=11) 
- base_accuracy: 0.7012987012987013 
- random_accuracy: 0.7705627705627706 
- Improvement of: 0.06926406926406925 
- 

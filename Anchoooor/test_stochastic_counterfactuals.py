@@ -51,28 +51,28 @@ def main():
     rnd_cfs_mxd = get_random_counterfactual(dfx, blackbox, diff_outcome, X2E, class_name, columns, discrete, continuous,
                                             features_type, label_encoder, mad=None, max_iter=100, tot_max_iter=10000)
 
-    print rnd_cfs_mxd
-    print apply_counterfactual(dfx, rnd_cfs_mxd[0], continuous, discrete)
-    print '--------'
+    print(rnd_cfs_mxd)
+    print(apply_counterfactual(dfx, rnd_cfs_mxd[0], continuous, discrete))
+    print('--------')
 
     rnd_cfs_mad = get_random_counterfactual(dfx, blackbox, diff_outcome, X2E, class_name, columns, discrete, continuous,
                                             features_type, label_encoder, mad=mad, max_iter=100, tot_max_iter=10000)
 
-    print rnd_cfs_mad
-    print apply_counterfactual(dfx, rnd_cfs_mad[0], continuous, discrete)
-    print '--------'
+    print(rnd_cfs_mad)
+    print(apply_counterfactual(dfx, rnd_cfs_mad[0], continuous, discrete))
+    print('--------')
 
     stc_cfs_mxd = get_stochastic_counterfactual(dfx, blackbox, X2E, diff_outcome, class_name, columns, discrete,
                                                 continuous, features_type, label_encoder, mad=None, max_iter=1000)
-    print stc_cfs_mxd
-    print apply_counterfactual(dfx, stc_cfs_mxd[0], continuous, discrete)
-    print '--------'
+    print(stc_cfs_mxd)
+    print(apply_counterfactual(dfx, stc_cfs_mxd[0], continuous, discrete))
+    print('--------')
 
     stc_cfs_mad = get_stochastic_counterfactual(dfx, blackbox, X2E, diff_outcome, class_name, columns, discrete,
                                                 continuous, features_type, label_encoder, mad=mad, max_iter=1000)
-    print stc_cfs_mad
-    print apply_counterfactual(dfx, stc_cfs_mad[0], continuous, discrete)
-    print '--------'
+    print(stc_cfs_mad)
+    print(apply_counterfactual(dfx, stc_cfs_mad[0], continuous, discrete))
+    print('--------')
 
 
 if __name__ == "__main__":

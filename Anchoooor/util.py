@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import _pickle as cPickle
-
+import torch
 from sklearn.preprocessing import LabelEncoder
 
 
@@ -188,7 +188,8 @@ def build_df2explain(bb, X, dataset):
     discrete = dataset['discrete']
     label_encoder = dataset['label_encoder']
     
-    y = bb.predict(X)
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    y = bb.predict(X, device)
     yX = np.concatenate((y.reshape(-1, 1), X), axis=1)
     data = list()
     for i, col in enumerate(columns):
