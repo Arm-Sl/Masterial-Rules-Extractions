@@ -1,11 +1,10 @@
 scipy==1.11.4
-torch==2.0.0
-pydotplus==2.02
+torch==2.1.2
+pydotplus==2.0.2
 pydot==1.4.2
 pandas==1.5.3
 scikit-learn==1.2.0
 deap==1.4.1
 imblearn
 matplotlib
-
 anchor-exp
