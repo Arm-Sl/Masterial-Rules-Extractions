@@ -1,6 +1,5 @@
 import torch.nn as nn
 import numpy as np
-from sklearn.preprocessing import StandardScaler
 import torch
 
 class MLP(nn.Module):

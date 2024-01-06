@@ -1,7 +1,7 @@
 import pyyadt
 import random
 import torch
-from Lore.neighbor_generator import *
+from neighbor_generator import *
 from gpdatagenerator import calculate_feature_values
 
 

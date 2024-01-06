@@ -1,10 +1,10 @@
-from Lore.util import *
+from util import *
 
 def prepare_diabete_dataset():
     # Read Dataset
     filename = "diabetes.csv"
     valeur = pd.read_csv("Data/diabetes/diabetes.csv", delimiter=' ', skipinitialspace=True)
-    label = pd.read_csv("Data/diabtes/labels_diabetes.csv")
+    label = pd.read_csv("Data/diabetes/labels_diabetes.csv")
     df = pd.concat([valeur, label], axis=1)
     columns = df.columns
     df = df[columns]

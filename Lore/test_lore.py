@@ -4,8 +4,8 @@ sys.path.append('../Masterial')
 import lore
 import torch
 import model
-from Lore.prepare_dataset import *
-from Lore.neighbor_generator import *
+from prepare_dataset import *
+from neighbor_generator import *
 import json
 from sklearn.model_selection import train_test_split
 
@@ -24,14 +24,30 @@ class NpEncoder(json.JSONEncoder):
         return super(NpEncoder, self).default(obj)
     
 def main():
-    path_data = "Data/breast-cancer"
-    name_json_info = "breast-cancer_info.json"
-    name_json_rules = "breast-cancer_rules.json"
-    name_model = "breast_cancer.pt"
-    model_dropout = 0.1
-    model_input_size = 30
-    model_output_size = 2
-    dataset = prepare_breast_cancer_dataset()
+    if(len(sys.argv) < 2):
+        print("Spécifier votre choix: breast ou diabetes")
+        exit()
+    if sys.argv[1] == "breast":
+        path_data = "Data/breast-cancer"
+        name_json_info = "breast-cancer_info.json"
+        name_json_rules = "breast-cancer_rules.json"
+        name_model = "breast_cancer.pt"
+        model_dropout = 0.1
+        model_input_size = 30
+        model_output_size = 2
+        dataset = prepare_breast_cancer_dataset()
+    elif sys.argv[1] == "diabetes":
+        path_data = "Data/diabetes"
+        name_json_info = "diabetes_info.json"
+        name_json_rules = "diabetes_rules.json"
+        name_model = "diabetes.pt"
+        model_dropout = 0
+        model_input_size = 8
+        model_output_size = 2
+        dataset = prepare_diabete_dataset()
+    else:
+        print("Mauvais arguments")
+        exit()
 
     features = dataset["columns"][1:]
     info_json = {"class_values": dataset["possible_outcomes"],
@@ -65,7 +81,7 @@ def main():
         #print('x = %s' % dfx)
         print('r = %s --> %s' % (explanation[0][1], explanation[0][0]))
         rule = {}
-        rule["label"] = explanation[0][0][dataset['class_name']]
+        
         for key, value in explanation[0][1].items():
             idx = info_json["feature_names"].index(key)
             supCount = value.count(">")
@@ -88,6 +104,7 @@ def main():
                 if "=" in v[2]:
                     v[2] = v[2][1:]
                 rule[str(idx)] = [float(v[0]), float(v[2])]
+        rule["label"] = explanation[0][0][dataset['class_name']]
         rules_json.append(rule)
 
         #for delta in explanation[1]:

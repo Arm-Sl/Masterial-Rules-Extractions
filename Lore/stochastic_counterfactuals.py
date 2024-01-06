@@ -1,6 +1,6 @@
 from util import *
 from distance_functions import *
-from Lore.neighbor_generator import generate_random_data
+from neighbor_generator import generate_random_data
 
 from sys import maxint
 from scipy.optimize import least_squares

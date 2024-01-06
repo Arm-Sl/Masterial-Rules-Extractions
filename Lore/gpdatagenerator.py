@@ -222,7 +222,6 @@ def generate_data(x, feature_values, bb, discrete, continuous, class_name, idx_f
 
         Xddo = get_oversample(population, halloffame)
         Xgp.append(Xddo)
-
     Xgp = np.concatenate((Xgp), axis=0)
 
     if return_logbook:
