@@ -1,7 +1,7 @@
 import pyyadt
 import networkx as nx
 
-from Anchor.util import *
+from util import *
 
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score

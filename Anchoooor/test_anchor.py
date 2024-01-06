@@ -1,28 +1,53 @@
-from anchor import anchor_tabular
+import sys
+import os
+sys.path.append('../Masterial')
 import torch
-from model import MLP
+import model
 from prepare_dataset import *
 from neighbor_generator import *
-
-from sklearn.ensemble import RandomForestClassifier
+import json
+from anchor import anchor_tabular
 from sklearn.model_selection import train_test_split
 
 warnings.filterwarnings("ignore")
 
+import numpy as np
+
+class NpEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return super(NpEncoder, self).default(obj)
 
 def main():
 
-    path_data = 'Data/diabetes/'
-    dataset_name = 'diabetes.csv'
-    class_name = 'labels_diabetes.csv'
-    dataset = prepare_diabete_dataset(dataset_name, class_name, path_data)
+    path_data = "Data/breast-cancer"
+    name_json_info = "breast-cancer_info.json"
+    name_json_rules = "breast-cancer_rules.json"
+    name_model = "breast_cancer.pt"
+    model_dropout = 0.1
+    model_input_size = 30
+    model_output_size = 2
+    dataset = prepare_breast_cancer_dataset()
+
+    features = dataset["columns"][1:]    #####Json
+    info_json = {"class_values": dataset["possible_outcomes"],
+                 "feature_names": features}
+    rules_json = []
+    with open(os.path.join("./json", name_json_info), 'w') as f:
+        json.dump(info_json, f, cls=NpEncoder)
+
 
     X, y = dataset['X'], dataset['y']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-    
+
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    blackbox = MLP(0).to(device)
-    blackbox.load_state_dict(torch.load("./state_dict_model.pt", map_location=torch.device('cpu')))
+    blackbox = model.MLP(model_input_size, model_output_size, model_dropout).to(device)
+    blackbox.load_state_dict(torch.load(os.path.join("./models", name_model)))
     blackbox.eval()
 
     X2E = X_test

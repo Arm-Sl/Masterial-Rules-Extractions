@@ -1,8 +1,8 @@
 import pyyadt
 import random
 
-from Anchor.neighbor_generator import *
-from Anchor.gpdatagenerator import calculate_feature_values
+from neighbor_generator import *
+from gpdatagenerator import calculate_feature_values
 
 
 def explain(idx_record2explain, X2E, dataset, blackbox,

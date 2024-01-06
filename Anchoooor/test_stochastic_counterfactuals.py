@@ -1,8 +1,8 @@
 
 
 
-from Anchor.prepare_dataset import *
-from Anchor.neighbor_generator import *
+from prepare_dataset import *
+from neighbor_generator import *
 from stochastic_counterfactuals import *
 
 from sklearn.ensemble import RandomForestClassifier

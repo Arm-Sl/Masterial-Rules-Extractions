@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 
-from Anchor.util import *
+from util import *
 
 from collections import defaultdict
 
