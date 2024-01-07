@@ -2,6 +2,7 @@ import sys
 import os
 sys.path.append('../Masterial')
 import torch
+torch.cuda.empty_cache()
 import model
 from prepare_dataset import *
 from neighbor_generator import *
