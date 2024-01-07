@@ -31,7 +31,7 @@ def main():
     match sys.argv[1]:
         case "breast":
             path_data = "Data/breast-cancer"
-            name_json_info = "breast-cancer_lore_info.json"
+            name_json_info = "breast-cancer_info.json"
             name_json_rules = "breast-cancer_lore_rules.json"
             name_model = "breast_cancer.pt"
             model_dropout = 0.1
@@ -40,7 +40,7 @@ def main():
             dataset = prepare_breast_cancer_dataset()
         case "diabetes":
             path_data = "Data/diabetes"
-            name_json_info = "diabetes_lore_info.json"
+            name_json_info = "diabetes_info.json"
             name_json_rules = "diabetes_lore_rules.json"
             name_model = "diabetes.pt"
             model_dropout = 0
