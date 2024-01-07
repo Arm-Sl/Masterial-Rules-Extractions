@@ -1,0 +1,1475 @@
+[
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "5": [
+            36.77, Infinity
+        ],
+        "2": [-Infinity,
+            80.0
+        ],
+        "4": [-Infinity,
+            37.0
+        ],
+        "7": [-Infinity,
+            24.0
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "7": [-Infinity,
+            24.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "7": [
+            41.0, Infinity
+        ],
+        "2": [-Infinity,
+            72.0
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "2": [-Infinity,
+            80.0
+        ],
+        "6": [
+            0.61, Infinity
+        ],
+        "label": 0
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "7": [
+            41.0, Infinity
+        ],
+        "3": [-Infinity,
+            32.75
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "7": [-Infinity,
+            41.0
+        ],
+        "3": [
+            0.0, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "4": [
+            130.0, Infinity
+        ],
+        "7": [
+            41.0, Infinity
+        ],
+        "2": [-Infinity,
+            72.0
+        ],
+        "1": [
+            99.0, Infinity
+        ],
+        "0": [
+            1.0, Infinity
+        ],
+        "3": [
+            0.0, Infinity
+        ],
+        "6": [
+            0.24, Infinity
+        ],
+        "label": 0
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "2": [-Infinity,
+            80.0
+        ],
+        "6": [
+            0.61, Infinity
+        ],
+        "0": [
+            1.0, Infinity
+        ],
+        "label": 0
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "7": [
+            41.0, Infinity
+        ],
+        "0": [-Infinity,
+            6.0
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "4": [-Infinity,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "5": [-Infinity,
+            27.5
+        ],
+        "label": 1
+    },
+    {
+        "4": [
+            0.0,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "4": [-Infinity,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "3": [
+            23.0, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "4": [-Infinity,
+            37.0
+        ],
+        "1": [-Infinity,
+            141.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "3": [
+            0.0, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "2": [
+            80.0, Infinity
+        ],
+        "7": [-Infinity,
+            41.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "2": [
+            72.0, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "4": [
+            130.0, Infinity
+        ],
+        "1": [
+            117.5, Infinity
+        ],
+        "2": [-Infinity,
+            62.0
+        ],
+        "3": [
+            32.75, Infinity
+        ],
+        "0": [
+            1.0, Infinity
+        ],
+        "5": [-Infinity,
+            36.77
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "5": [
+            32.4, Infinity
+        ],
+        "2": [-Infinity,
+            72.0
+        ],
+        "3": [-Infinity,
+            0.0
+        ],
+        "4": [-Infinity,
+            37.0
+        ],
+        "7": [-Infinity,
+            41.0
+        ],
+        "0": [-Infinity,
+            6.0
+        ],
+        "label": 0
+    },
+    {
+        "4": [
+            0.0,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "4": [-Infinity,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "4": [
+            37.0,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "4": [
+            0.0,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "5": [
+            32.4, Infinity
+        ],
+        "2": [-Infinity,
+            72.0
+        ],
+        "4": [-Infinity,
+            0.0
+        ],
+        "7": [-Infinity,
+            29.0
+        ],
+        "3": [-Infinity,
+            32.75
+        ],
+        "0": [
+            1.0, Infinity
+        ],
+        "label": 0
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "7": [
+            41.0, Infinity
+        ],
+        "2": [-Infinity,
+            72.0
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "4": [-Infinity,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "1": [-Infinity,
+            141.0
+        ],
+        "label": 1
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "1": [-Infinity,
+            141.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "2": [-Infinity,
+            80.0
+        ],
+        "7": [
+            29.0, Infinity
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "4": [-Infinity,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "1": [-Infinity,
+            141.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "7": [
+            41.0, Infinity
+        ],
+        "6": [-Infinity,
+            0.24
+        ],
+        "label": 0
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "7": [
+            29.0, Infinity
+        ],
+        "2": [-Infinity,
+            80.0
+        ],
+        "label": 0
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "1": [-Infinity,
+            141.0
+        ],
+        "label": 1
+    },
+    {
+        "2": [-Infinity,
+            62.0
+        ],
+        "1": [
+            117.5, Infinity
+        ],
+        "5": [
+            32.4, Infinity
+        ],
+        "3": [-Infinity,
+            0.0
+        ],
+        "4": [-Infinity,
+            0.0
+        ],
+        "7": [
+            24.0,
+            29.0
+        ],
+        "6": [
+            0.61, Infinity
+        ],
+        "label": 0
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "3": [-Infinity,
+            0.0
+        ],
+        "2": [-Infinity,
+            80.0
+        ],
+        "5": [
+            27.5, Infinity
+        ],
+        "4": [-Infinity,
+            0.0
+        ],
+        "7": [
+            24.0,
+            29.0
+        ],
+        "0": [-Infinity,
+            3.0
+        ],
+        "label": 0
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "3": [-Infinity,
+            0.0
+        ],
+        "2": [-Infinity,
+            80.0
+        ],
+        "4": [-Infinity,
+            0.0
+        ],
+        "7": [
+            24.0,
+            41.0
+        ],
+        "6": [
+            0.61, Infinity
+        ],
+        "0": [
+            6.0, Infinity
+        ],
+        "label": 0
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "2": [
+            80.0, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "4": [-Infinity,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "4": [-Infinity,
+            37.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "0": [
+            6.0, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "5": [
+            36.77, Infinity
+        ],
+        "3": [-Infinity,
+            0.0
+        ],
+        "4": [-Infinity,
+            37.0
+        ],
+        "6": [
+            0.37, Infinity
+        ],
+        "0": [-Infinity,
+            6.0
+        ],
+        "label": 0
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "5": [
+            36.77, Infinity
+        ],
+        "2": [-Infinity,
+            72.0
+        ],
+        "3": [-Infinity,
+            0.0
+        ],
+        "label": 0
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "2": [
+            80.0, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "2": [-Infinity,
+            80.0
+        ],
+        "6": [
+            0.61, Infinity
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "4": [
+            130.0, Infinity
+        ],
+        "1": [
+            117.5, Infinity
+        ],
+        "2": [-Infinity,
+            80.0
+        ],
+        "3": [
+            32.75, Infinity
+        ],
+        "6": [
+            0.24, Infinity
+        ],
+        "5": [
+            32.4, Infinity
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "2": [-Infinity,
+            62.0
+        ],
+        "1": [
+            117.5, Infinity
+        ],
+        "7": [-Infinity,
+            24.0
+        ],
+        "3": [-Infinity,
+            0.0
+        ],
+        "4": [-Infinity,
+            0.0
+        ],
+        "6": [
+            0.37, Infinity
+        ],
+        "0": [
+            1.0, Infinity
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "7": [
+            41.0, Infinity
+        ],
+        "3": [-Infinity,
+            23.0
+        ],
+        "6": [-Infinity,
+            0.61
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "6": [-Infinity,
+            0.37
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "6": [-Infinity,
+            0.37
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "4": [-Infinity,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "5": [-Infinity,
+            27.5
+        ],
+        "label": 1
+    },
+    {
+        "4": [
+            37.0,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "7": [-Infinity,
+            24.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "3": [
+            23.0, Infinity
+        ],
+        "5": [
+            32.4, Infinity
+        ],
+        "6": [
+            0.24, Infinity
+        ],
+        "7": [
+            24.0, Infinity
+        ],
+        "0": [-Infinity,
+            6.0
+        ],
+        "label": 0
+    },
+    {
+        "4": [
+            130.0, Infinity
+        ],
+        "7": [
+            41.0, Infinity
+        ],
+        "1": [
+            99.0, Infinity
+        ],
+        "2": [-Infinity,
+            72.0
+        ],
+        "3": [
+            0.0, Infinity
+        ],
+        "0": [
+            3.0, Infinity
+        ],
+        "6": [
+            0.24, Infinity
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "5": [-Infinity,
+            27.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "7": [-Infinity,
+            24.0
+        ],
+        "label": 1
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "3": [
+            23.0, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "3": [
+            32.75, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "3": [-Infinity,
+            0.0
+        ],
+        "2": [-Infinity,
+            72.0
+        ],
+        "4": [-Infinity,
+            0.0
+        ],
+        "7": [
+            24.0,
+            41.0
+        ],
+        "6": [
+            0.37, Infinity
+        ],
+        "0": [
+            1.0, Infinity
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "2": [
+            72.0, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "4": [-Infinity,
+            37.0
+        ],
+        "6": [-Infinity,
+            0.24
+        ],
+        "label": 1
+    },
+    {
+        "4": [
+            0.0,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "0": [-Infinity,
+            6.0
+        ],
+        "3": [
+            23.0, Infinity
+        ],
+        "5": [-Infinity,
+            36.77
+        ],
+        "label": 0
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "6": [-Infinity,
+            0.37
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "7": [-Infinity,
+            24.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "2": [-Infinity,
+            62.0
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "0": [
+            6.0, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "4": [-Infinity,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "4": [
+            0.0,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "2": [
+            80.0, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "4": [-Infinity,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "2": [
+            80.0, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "5": [-Infinity,
+            32.4
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [
+            141.0, Infinity
+        ],
+        "4": [
+            130.0, Infinity
+        ],
+        "2": [-Infinity,
+            72.0
+        ],
+        "6": [
+            0.61, Infinity
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "4": [-Infinity,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "2": [-Infinity,
+            62.0
+        ],
+        "1": [
+            117.5, Infinity
+        ],
+        "6": [
+            0.61, Infinity
+        ],
+        "0": [
+            1.0, Infinity
+        ],
+        "3": [-Infinity,
+            23.0
+        ],
+        "label": 0
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "5": [-Infinity,
+            27.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "4": [
+            0.0,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "7": [-Infinity,
+            24.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "4": [-Infinity,
+            130.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            99.0
+        ],
+        "label": 1
+    },
+    {
+        "4": [-Infinity,
+            130.0
+        ],
+        "2": [
+            80.0, Infinity
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            117.5
+        ],
+        "7": [-Infinity,
+            24.0
+        ],
+        "label": 1
+    },
+    {
+        "1": [-Infinity,
+            141.0
+        ],
+        "4": [-Infinity,
+            130.0
+        ],
+        "label": 1
+    }
+]
