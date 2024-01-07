@@ -1,4 +1,5 @@
 /venv/
+/__pycache__/
 /Anchor/__pycache__/distance_functions.cpython-311.pyc
 Anchor/__pycache__/gpdatagenerator.cpython-311.pyc
 Anchor/__pycache__/prepare_dataset.cpython-311.pyc
