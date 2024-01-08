@@ -1,0 +1,4 @@
+logzero==1.6.2
+pandas==1.1.4
+#tensorflow==2.15.0.post1
+click==7.1.2
