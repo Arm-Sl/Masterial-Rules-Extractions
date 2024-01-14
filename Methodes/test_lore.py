@@ -25,21 +25,21 @@ class NpEncoder(json.JSONEncoder):
     
 def main():
     if(len(sys.argv) < 2):
-        print("Spécifier votre choix: breast ou diabetes")
+        print("Spécifier votre choix: breast, diabetes, heart ou covid")
         exit()
 
     match sys.argv[1]:
         case "breast":
-            path_data = "Data/breast-cancer"
+            path_data = "Data/breast-cancer/"
             name_json_info = "breast-cancer_info.json"
             name_json_rules = "breast-cancer_lore_rules.json"
-            name_model = "breast_cancer.pt"
+            name_model = "breast-cancer.pt"
             model_dropout = 0.1
             model_input_size = 30
             model_output_size = 2
             dataset = prepare_breast_cancer_dataset()
         case "diabetes":
-            path_data = "Data/diabetes"
+            path_data = "Data/diabetes/"
             name_json_info = "diabetes_info.json"
             name_json_rules = "diabetes_lore_rules.json"
             name_model = "diabetes.pt"
@@ -47,6 +47,24 @@ def main():
             model_input_size = 8
             model_output_size = 2
             dataset = prepare_diabete_dataset()
+        case "heart":
+            path_data = "Data/heart/"
+            name_json_info = "heart_info.json"
+            name_json_rules = "heart_lore_rules.json"
+            name_model = "heart.pt"
+            model_dropout = 0.1
+            model_input_size = 13
+            model_output_size = 2
+            dataset = prepare_heart_dataset()
+        case "covid":
+            path_data = "Data/Covid-19/"
+            name_json_info = "Covid-19_info.json"
+            name_json_rules = "Covid-19_lore_rules.json"
+            name_model = "covid.pt"
+            model_dropout = 0
+            model_input_size = 21
+            model_output_size = 2
+            dataset = prepare_covid_dataset()
         case _:
             print("Mauvais arguments")
             exit()
@@ -66,16 +84,20 @@ def main():
     blackbox.load_state_dict(torch.load(os.path.join("./models", name_model)))
     blackbox.eval()
     X2E = X_test
-    y2E = blackbox.predict(X2E, device)
+    y2E = blackbox.predict(X2E)
     y2E = np.asarray([dataset['possible_outcomes'][i] for i in y2E])
-    for idx_record2explain in range(len(X2E)):
+    
+    nb = len(X2E)
+    if sys.argv[1] == "covid":
+        nb = 140
+    for idx_record2explain in range(nb):
         print(idx_record2explain)
         explanation, infos = lore.explain(idx_record2explain, X2E, dataset, blackbox,
-                                        ng_function=genetic_neighborhood,
+                                        ng_function=random_neighborhood,
                                         discrete_use_probabilities=True,
                                         continuous_function_estimation=False,
                                         returns_infos=True,
-                                        path=path_data, sep=';', log=False)
+                                        path=path_data, sep=';', log=True)
 
         dfX2E = build_df2explain(blackbox, X2E, dataset).to_dict('records')
         dfx = dfX2E[idx_record2explain]

@@ -28,20 +28,19 @@ def explain(idx_record2explain, X2E, dataset, blackbox,
 
     # Generate Neighborhood
     dfZ, Z = ng_function(dfZ, x, blackbox, dataset)
-
+    print(dfZ)
     # Build Decision Tree
     dt, dt_dot = pyyadt.fit(dfZ, class_name, columns, features_type, discrete, continuous,
                             filename=dataset['name'], path=path, sep=sep, log=log)
 
     # Apply Black Box and Decision Tree on instance to explain
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    bb_outcome = blackbox.predict(x.reshape(1, -1), device)[0]
+    bb_outcome = blackbox.predict(x.reshape(1, -1))[0]
 
     dfx = build_df2explain(blackbox, x.reshape(1, -1), dataset).to_dict('records')[0]
     cc_outcome, rule, tree_path = pyyadt.predict_rule(dt, dfx, class_name, features_type, discrete, continuous)
 
     # Apply Black Box and Decision Tree on neighborhood
-    y_pred_bb = blackbox.predict(Z, device)
+    y_pred_bb = blackbox.predict(Z)
     y_pred_cc, leaf_nodes = pyyadt.predict(dt, dfZ.to_dict('records'), class_name, features_type,
                                            discrete, continuous)
 

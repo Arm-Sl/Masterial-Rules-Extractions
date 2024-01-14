@@ -5,7 +5,7 @@ from sklearn.model_selection import ParameterGrid
 from model import MLP
 from dataset import CustomDataset
 import numpy as np
-
+import sys
 """
 MEILLEUR PARAM DIABETES
 
@@ -25,29 +25,70 @@ dropout 0.1
 """
 MEILLEUR PARAM HEART
 
-learning_rate = 0.01
+learning_rate = 0.1
 batch_size = 16
-dropout 0.05
+dropout 0.1
 """
 
-"""param_grid = {
-    "learning_rate": [0.1, 0.01, 0.001, 0.0001],
-    "dropout": [0, 0.05, 0.1],
-    "batch_size": [4, 8, 12, 16]
-}"""
+"""
+MEILLEUR PARAM Covid
+
+learning_rate = 0.01
+batch_size = 128
+dropout 0
+"""
 
 param_grid = {
-    "learning_rate": [0.001],
-    "dropout": [0],
-    "batch_size": [16]
+    "learning_rate": [0.1, 0.01, 0.001, 0.0001],
+    "dropout": [0, 0.05, 0.1],
+    "batch_size": [4, 8, 12, 16, 64, 128]
 }
 
-# A modifier pour choisir le dataset
-path_model = "./models/diabetes.pt"
-path_data = "Data/diabetes/diabetes.csv"
-path_labels = "Data/diabetes/labels_diabetes.csv"
-nb_features = 8
-nb_classe = 2
+"""param_grid = {
+    "learning_rate": [0.1],
+    "dropout": [0.1],
+    "batch_size": [16]
+}"""
+
+if(len(sys.argv) < 2):
+    print("Spécifier votre choix: breast, diabetes, heart, derm ou covid")
+    exit()
+
+match sys.argv[1]:
+    case "breast":
+        path_model = "./models/breast-cancer.pt"
+        path_data = "Data/breast-cancer/breast-cancer.csv"
+        path_labels = "Data/breast-cancer/labels_breast-cancer.csv"
+        nb_features = 30
+        nb_classe = 2
+    case "diabetes":
+        path_model = "./models/diabetes.pt"
+        path_data = "Data/diabetes/diabetes.csv"
+        path_labels = "Data/diabetes/labels_diabetes.csv"
+        nb_features = 8
+        nb_classe = 2
+    case "heart":
+        path_model = "./models/heart.pt"
+        path_data = "Data/heart/heart.csv"
+        path_labels = "Data/heart/labels_heart.csv"
+        nb_features = 13
+        nb_classe = 2
+    case "derm":
+        path_model = "./models/derm.pt"
+        path_data = "Data/derm/derm.csv"
+        path_labels = "Data/derm/labels_derm.csv"
+        nb_features = 34
+        nb_classe = 7
+    case "covid":
+        path_model = "./models/covid.pt"
+        path_data = "Data/Covid-19/Covid-19.csv"
+        path_labels = "Data/Covid-19/labels_Covid-19.csv"
+        nb_features = 21
+        nb_classe = 2
+    case _:
+        print("Mauvais arguments")
+        exit()
+
 
 train_data = CustomDataset(path_data, path_labels, split="Train")
 valid_data = CustomDataset(path_data, path_labels, split="Validation")
@@ -70,7 +111,7 @@ for params in param_list:
 
     model = MLP(nb_features, nb_classe, dropout).to(device)
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay = 0.000001)
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     loss_fn = nn.CrossEntropyLoss()
     
     training_losses, valid_losses, accs = [],[],[]
@@ -101,7 +142,6 @@ for params in param_list:
                 loss = loss_fn(outputs, labels)
                     
                 valid_loss += loss.item()
-                    
                 _, predicted = outputs.topk(1, dim = 1)
                 eq = predicted == labels.view(-1, 1)
                 acc += eq.sum().item()
@@ -112,7 +152,7 @@ for params in param_list:
         print('epoch : {}, train loss : {:.4f}, valid loss : {:.4f}, valid acc : {:.2f}%'\
             .format(epoch+1, training_loss, valid_loss, (acc/len(valid_data)) * 100))
         
-        if valid_loss <= min_loss:
+        if valid_loss < min_loss:
             print("Saving Model {:.4f} ---> {:.4f}".format(min_loss, valid_loss))
             best_learning_rate = learning_rate
             best_batch_size = batch_size
@@ -138,7 +178,7 @@ with torch.no_grad():
         eq = predicted == labels.view(-1, 1)
         total_correct += eq.sum().item()
         
-        print("Predicted Value: {}..\tTrue Value: {}..".format(predicted.item(), labels.item()))
+        #print("Predicted Value: {}..\tTrue Value: {}..".format(predicted.item(), labels.item()))
 
 print("Score: {}/{}".format(total_correct, len(test_data)))
 print("Percentage Correct: {:.2f}%".format((total_correct / len(test_data)) * 100))

@@ -46,8 +46,7 @@ def genetic_neighborhood(dfZ, x, blackbox, dataset):
                       distance_function, neigtype={'ss': 0.5, 'sd': 0.5}, population_size=1000, halloffame_ratio=0.1,
                       alpha1=0.5, alpha2=0.5, eta1=1.0, eta2=0.0,  tournsize=3, cxpb=0.5, mutpb=0.2, ngen=10)
 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    zy = blackbox.predict(Z, device)
+    zy = blackbox.predict(Z)
     # print(np.unique(zy, return_counts=True))
     if len(np.unique(zy)) == 1:
         # print('qui')
@@ -168,8 +167,7 @@ def generate_random_data(X, class_name, columns, discrete, continuous, features_
 
 def random_oversampling(dfZ, x, blackbox, dataset):
     dfZ, Z = random_neighborhood(dfZ, x, blackbox, dataset)
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    y = blackbox.predict(Z, device)
+    y = blackbox.predict(Z)
 
     oversampler = RandomOverSampler()
     Z, _ = oversampler.fit_sample(Z, y)
@@ -179,8 +177,7 @@ def random_oversampling(dfZ, x, blackbox, dataset):
 
 def random_instance_selection(dfZ, x, blackbox, dataset):
     dfZ1, Z = random_neighborhood(dfZ, x, blackbox, dataset)
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    y = blackbox.predict(Z, device)
+    y = blackbox.predict(Z)
 
     cnn = CondensedNearestNeighbour(return_indices=True)
     Z, _, _ = cnn.fit_sample(Z, y)

@@ -41,9 +41,8 @@ def fitness_sso(x0, bb, alpha1, alpha2, eta, discrete, continuous, class_name, i
     # zero if is too similar
     sim_ratio = 1.0 - distance_function(x0d, x1d, discrete, continuous, class_name)
     record_similarity = 0.0 if sim_ratio >= eta else sim_ratio
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    y0 = bb.predict(np.asarray(x0).reshape(1, -1), device)[0]
-    y1 = bb.predict(np.asarray(x1).reshape(1, -1), device)[0]
+    y0 = bb.predict(np.asarray(x0).reshape(1, -1))[0]
+    y1 = bb.predict(np.asarray(x1).reshape(1, -1))[0]
     target_similarity = 1.0 if y0 == y1 else 0.0
     evaluation = alpha1 * record_similarity + alpha2 * target_similarity
     return evaluation,
@@ -57,9 +56,8 @@ def fitness_sdo(x0, bb, alpha1, alpha2, eta, discrete, continuous, class_name, i
     # zero if is too similar
     sim_ratio = 1.0 - distance_function(x0d, x1d, discrete, continuous, class_name)
     record_similarity = 0.0 if sim_ratio >= eta else sim_ratio
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    y0 = bb.predict(np.asarray(x0).reshape(1, -1), device)[0]
-    y1 = bb.predict(np.asarray(x1).reshape(1, -1), device)[0]
+    y0 = bb.predict(np.asarray(x0).reshape(1, -1))[0]
+    y1 = bb.predict(np.asarray(x1).reshape(1, -1))[0]
     target_similarity = 1.0 if y0 != y1 else 0.0
 
     evaluation = alpha1 * record_similarity + alpha2 * target_similarity
@@ -74,9 +72,8 @@ def fitness_dso(x0, bb, alpha1, alpha2, eta, discrete, continuous, class_name, i
     # zero if is too dissimilar
     sim_ratio = 1.0 - distance_function(x0d, x1d, discrete, continuous, class_name)
     record_similarity = 0.0 if sim_ratio <= eta else 1.0 - sim_ratio
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    y0 = bb.predict(np.asarray(x0).reshape(1, -1), device)[0]
-    y1 = bb.predict(np.asarray(x1).reshape(1, -1), device)[0]
+    y0 = bb.predict(np.asarray(x0).reshape(1, -1))[0]
+    y1 = bb.predict(np.asarray(x1).reshape(1, -1))[0]
     target_similarity = 1.0 if y0 == y1 else 0.0
     
     evaluation = alpha1 * record_similarity + alpha2 * target_similarity
@@ -91,9 +88,8 @@ def fitness_ddo(x0, bb, alpha1, alpha2, eta, discrete, continuous, class_name, i
     # zero if is too dissimilar
     sim_ratio = 1.0 - distance_function(x0d, x1d, discrete, continuous, class_name)
     record_similarity = 0.0 if sim_ratio <= eta else 1.0 - sim_ratio
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    y0 = bb.predict(np.asarray(x0).reshape(1, -1), device)[0]
-    y1 = bb.predict(np.asarray(x1).reshape(1, -1), device)[0]
+    y0 = bb.predict(np.asarray(x0).reshape(1, -1))[0]
+    y1 = bb.predict(np.asarray(x1).reshape(1, -1))[0]
     target_similarity = 1.0 if y0 != y1 else 0.0
     
     evaluation = alpha1 * record_similarity + alpha2 * target_similarity

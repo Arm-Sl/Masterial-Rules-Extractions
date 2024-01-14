@@ -1,0 +1,1 @@
+{"class_values": [0, 1], "feature_names": ["Fever", "Tiredness", "Dry-Cough", "Difficulty-in-Breathing", "Sore-Throat", "Pains", "Nasal-Congestion", "Runny-Nose", "Diarrhea", "None_Experiencing", "Age_0-9", "Age_10-19", "Age_20-24", "Age_25-59", "Age_60+", "Gender_Female", "Gender_Male", "Contact_Dont-Know", "Contact_No", "Contact_Yes", "Symptoms_Score"]}
