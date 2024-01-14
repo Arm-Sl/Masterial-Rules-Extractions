@@ -8,7 +8,6 @@ from prepare_dataset import *
 from neighbor_generator import *
 import json
 from anchor import anchor_tabular
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
 warnings.filterwarnings("ignore")
@@ -27,22 +26,22 @@ class NpEncoder(json.JSONEncoder):
 
 def main():
     if(len(sys.argv) < 2):
-        print("Spécifier votre choix: breast ou diabetes")
+        print("Spécifier votre choix: breast, diabetes, heart ou covid")
         exit()
     
     
     match sys.argv[1]:
         case "breast":
-            path_data = "Data/breast-cancer"
+            path_data = "Data/breast-cancer/"
             name_json_info = "breast-cancer_info.json"
             name_json_rules = "breast-cancer_anchor_rules.json"
-            name_model = "breast_cancer.pt"
+            name_model = "breast-cancer.pt"
             model_dropout = 0.1
             model_input_size = 30
             model_output_size = 2
             dataset = prepare_breast_cancer_dataset()
         case "diabetes":
-            path_data = "Data/diabetes"
+            path_data = "Data/diabetes/"
             name_json_info = "diabetes_info.json"
             name_json_rules = "diabetes_anchor_rules.json"
             name_model = "diabetes.pt"
@@ -50,6 +49,24 @@ def main():
             model_input_size = 8
             model_output_size = 2
             dataset = prepare_diabete_dataset()
+        case "heart":
+            path_data = "Data/heart/"
+            name_json_info = "heart_info.json"
+            name_json_rules = "heart_anchor_rules.json"
+            name_model = "heart.pt"
+            model_dropout = 0.01
+            model_input_size = 13
+            model_output_size = 2
+            dataset = prepare_heart_dataset()
+        case "covid":
+            path_data = "Data/Covid-19/"
+            name_json_info = "Covid-19_info.json"
+            name_json_rules = "Covid-19_anchor_rules.json"
+            name_model = "covid.pt"
+            model_dropout = 0
+            model_input_size = 21
+            model_output_size = 2
+            dataset = prepare_covid_dataset()
         case _:
             print("Mauvais arguments")
             exit()
@@ -71,8 +88,8 @@ def main():
 
     X2E = X_test
     listf = list()
-    for idx_record2explain in range(len(X2E)):
-
+    #for idx_record2explain in range(len(X2E)):
+    for idx_record2explain in range(140):  #on explique les 140 premiers exemples du dataset test (pour des raisons de temps de calcul) uniquement COVID
         class_name = dataset['class_name']
         columns = dataset['columns']
         continuous = dataset['continuous']
