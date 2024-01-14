@@ -52,7 +52,7 @@ def main():
             name_json_info = "heart_info.json"
             name_json_rules = "heart_lore_rules.json"
             name_model = "heart.pt"
-            model_dropout = 0.1
+            model_dropout = 0.01
             model_input_size = 13
             model_output_size = 2
             dataset = prepare_heart_dataset()
@@ -93,11 +93,11 @@ def main():
     for idx_record2explain in range(nb):
         print(idx_record2explain)
         explanation, infos = lore.explain(idx_record2explain, X2E, dataset, blackbox,
-                                        ng_function=random_neighborhood,
+                                        ng_function=genetic_neighborhood,
                                         discrete_use_probabilities=True,
                                         continuous_function_estimation=False,
                                         returns_infos=True,
-                                        path=path_data, sep=';', log=True)
+                                        path=path_data, sep=';', log=False)
 
         dfX2E = build_df2explain(blackbox, X2E, dataset).to_dict('records')
         dfx = dfX2E[idx_record2explain]

@@ -17,31 +17,31 @@ dropout 0
 """
 MEILLEUR PARAM BREAST CANCER
 
-learning_rate = 0.01
+learning_rate = 0.001
 batch_size = 16
-dropout 0.1
+dropout 0
 """
 
 """
 MEILLEUR PARAM HEART
 
-learning_rate = 0.1
-batch_size = 16
-dropout 0.1
+learning_rate = 0.01
+batch_size = 64
+dropout 0.05
 """
 
 """
 MEILLEUR PARAM Covid
 
-learning_rate = 0.01
+learning_rate = 0.001
 batch_size = 128
-dropout 0
+dropout 0.2
 """
 
 param_grid = {
     "learning_rate": [0.1, 0.01, 0.001, 0.0001],
-    "dropout": [0, 0.05, 0.1],
-    "batch_size": [4, 8, 12, 16, 64, 128]
+    "dropout": [0, 0.05, 0.1, 0.2],
+    "batch_size": [4, 8, 16, 32, 64, 128]
 }
 
 """param_grid = {
@@ -111,7 +111,7 @@ for params in param_list:
 
     model = MLP(nb_features, nb_classe, dropout).to(device)
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=0.00001)
     loss_fn = nn.CrossEntropyLoss()
     
     training_losses, valid_losses, accs = [],[],[]

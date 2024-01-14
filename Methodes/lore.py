@@ -28,7 +28,6 @@ def explain(idx_record2explain, X2E, dataset, blackbox,
 
     # Generate Neighborhood
     dfZ, Z = ng_function(dfZ, x, blackbox, dataset)
-    print(dfZ)
     # Build Decision Tree
     dt, dt_dot = pyyadt.fit(dfZ, class_name, columns, features_type, discrete, continuous,
                             filename=dataset['name'], path=path, sep=sep, log=log)
