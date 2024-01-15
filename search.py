@@ -44,12 +44,6 @@ param_grid = {
     "batch_size": [4, 8, 16, 32, 64, 128]
 }
 
-"""param_grid = {
-    "learning_rate": [0.1],
-    "dropout": [0.1],
-    "batch_size": [16]
-}"""
-
 if(len(sys.argv) < 2):
     print("Spécifier votre choix: breast, diabetes, heart, derm ou covid")
     exit()
@@ -109,7 +103,7 @@ for params in param_list:
         
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    model = MLP(nb_features, nb_classe, dropout).to(device)
+    model = MLP(nb_features, nb_classe, dropout).to(device) #lancement modele
 
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=0.00001)
     loss_fn = nn.CrossEntropyLoss()

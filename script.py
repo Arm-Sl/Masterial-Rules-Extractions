@@ -1,4 +1,4 @@
-import pandas as pd
+import pandas as pd  # melanger les donnees
 
 dfx = pd.read_csv('Data/heart/heart.csv', sep=" ")
 dfy = pd.read_csv('Data/heart/labels_heart.csv', sep=" ")
