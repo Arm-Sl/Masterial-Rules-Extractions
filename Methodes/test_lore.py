@@ -8,10 +8,44 @@ from prepare_dataset import *
 from neighbor_generator import *
 import json
 from sklearn.model_selection import train_test_split
+from evaluation import evaluate_explanation
 
 warnings.filterwarnings("ignore")
 
 import numpy as np
+
+"""
+DIABETES
+
+Completeness : 0.22580850522026993
+Correctness : 0.9093386877164481
+Fidelity : 0.7627323656735422
+Robustesse : 0.9835752482811306
+Number of rules : 1.0
+Average rule length : 3.7941176470588234
+"""
+
+"""
+BREAST
+
+Completeness : 0.21052631578947364
+Correctness : 0.965806446587152
+Fidelity : 0.7541423001949318
+Robustesse : 0.9563840155945419
+Number of rules : 1.0
+Average rule length : 2.537037037037037
+"""
+
+"""
+HEART
+
+Completeness : 0.18731523783929052
+Correctness : 0.9532707046159312
+Fidelity : 0.7519484009674817
+Robustesse : 0.8656275194840097
+Number of rules : 1.0
+Average rule length : 3.9508196721311477
+"""
 
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -78,18 +112,23 @@ def main():
 
     X, y = dataset['X'], dataset['y']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     blackbox = model.MLP(model_input_size, model_output_size, model_dropout).to(device)
     blackbox.load_state_dict(torch.load(os.path.join("./models", name_model)))
     blackbox.eval()
     X2E = X_test
     y2E = blackbox.predict(X2E)
-    y2E = np.asarray([dataset['possible_outcomes'][i] for i in y2E])
-    
     nb = len(X2E)
     if sys.argv[1] == "covid":
         nb = 140
+
+    completeness_l = []
+    correctness_l = []
+    fidelity_l = []
+    robustesse_l = []
+    number_of_rules_l = []
+    average_rule_length_l = []
+    
     for idx_record2explain in range(nb):
         print(idx_record2explain)
         explanation, infos = lore.explain(idx_record2explain, X2E, dataset, blackbox,
@@ -101,8 +140,7 @@ def main():
 
         dfX2E = build_df2explain(blackbox, X2E, dataset).to_dict('records')
         dfx = dfX2E[idx_record2explain]
-
-        #print('x = %s' % dfx)
+        print('x = %s' % dfx)
         print('r = %s --> %s' % (explanation[0][1], explanation[0][0]))
         rule = {}
         
@@ -131,21 +169,58 @@ def main():
         rule["label"] = explanation[0][0][dataset['class_name']]
         rules_json.append(rule)
 
-        #for delta in explanation[1]:
-        #    print('delta', delta)
+        """for delta in explanation[1]:
+            print('delta', delta)
+        """
+        tree_path = infos['tree_path']
 
-        #covered = lore.get_covered(explanation[0][1], dfX2E, dataset)
-        #print(len(covered))
-        #print(covered)
-
+        covered = lore.get_covered(explanation[0][1], dfX2E, dataset)       
         #print(explanation[0][0][dataset['class_name']], '<<<<')
 
         def eval(x, y):
             return 1 if x == y else 0
+        
+        def count_zeros(arr):
+            arr = np.array(arr)
+            return arr.size - np.count_nonzero(arr)
+        
+        def perturb_data(data, delta=0.1):
+            return data + np.random.uniform(low=-delta, high=delta, size=data.shape)
 
-        #precision = [1-eval(v, explanation[0][0][dataset['class_name']]) for v in y2E[covered]]
-        #print(precision)
-        #print(np.mean(precision), np.std(precision))
+        # Correctness
+        # Comparaison entre la classe original et la prédiction de la règle
+        correct = [1-eval(dfX2E[idx][dataset["class_name"]], explanation[0][0][dataset['class_name']]) for idx in covered]
+
+        # Fidelity
+        # Prédictions de la règle sur l'ensemble de test
+        f, _ = infos["predict"](dfX2E)
+        # Comparaison de la prédiction à partir de la règle et de la prédiction du modèle sur l'ensemble de test
+        fidel = [1-eval(y2E[idx], f[idx]) for idx in range(len(y2E))]
+        
+        # Robustesse
+        # Perturbation des data
+        X_perturbed = perturb_data(X2E)
+        dfX2E_perturbed = build_df2explain(blackbox, X_perturbed, dataset).to_dict('records')
+        # Prédiction de Lore sur les data perturbé
+        r_perturbed, _ = infos["predict"](dfX2E_perturbed)
+        # Comparaison entre prediction lore sur ensemble de test perturbé et les prédictions lore sur l'ensemble de test
+        r = [1-eval(f[idx], r_perturbed[idx]) for idx in range(len(y2E))]
+
+        if len(covered) > 0:
+            completeness_l.append(len(covered) / len(X2E))
+            correctness_l.append(count_zeros(correct) / len(covered))
+            fidelity_l.append(count_zeros(fidel) / len(X2E))
+            robustesse_l.append(count_zeros(r) / len(X2E))
+            number_of_rules_l.append(1)
+            average_rule_length_l.append(len(tree_path) - 1)
+
+    print("Completeness :" ,np.mean(completeness_l))
+    print("Correctness :" ,np.mean(correctness_l))
+    print("Fidelity :" ,np.mean(fidelity_l))
+    print("Robustesse :" ,np.mean(robustesse_l))
+    print("Number of rules :" ,np.mean(number_of_rules_l))
+    print("Average rule length :" ,np.mean(average_rule_length_l))
+
     with open(os.path.join("./json", name_json_rules), 'w') as f:
         json.dump(rules_json, f, cls=NpEncoder)
 

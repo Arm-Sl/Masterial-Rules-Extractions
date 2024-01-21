@@ -47,7 +47,7 @@ def evaluate_explanation(x, bb, dfZ, dt, tree_path, leafnode_records, bb_outcome
         local_counterfactual_fairness = 0.0
         individual_counterfactual_hit = 0.0
 
-    eval_str = '%d,%.6f,%.6f,%.6f,%.6f,%d,%d,%d,%.6f,%.6f' % (
+    eval_str = 'individual_hit: %d,\n local_mimic_acc: %.6f,\n local_mimic_f1: %.6f,\n local_fairness_acc: %.6f,\n local_fairness_f1: %.6f,\n explanation_size: %d,\n counterfactual_size: %d,\n local_logic_size: %d,\n local_counterfactual_fairness: %.6f,\n individual_counterfactual_hit: %.6f' % (
         individual_hit, local_mimic_acc, local_mimic_f1, local_fairness_acc, local_fairness_f1,
         explanation_size, counterfactual_size, local_logic_size,
         local_counterfactual_fairness, individual_counterfactual_hit)

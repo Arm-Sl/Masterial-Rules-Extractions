@@ -7,8 +7,8 @@ class CustomDataset(Dataset):
         super(CustomDataset, self).__init__()
         self.df_x = pd.read_csv(dataPath, sep=" ")
         self.df_y = pd.read_csv(labelPath, sep=" ")
-        nbTrain = int(self.df_x.shape[0] * 0.75)
-        nbVal = nbTrain + int(self.df_x.shape[0] * 0.15)
+        nbTrain = int(self.df_x.shape[0] * 0.70)
+        nbVal = nbTrain + int(self.df_x.shape[0] * 0.10)
         if split == "Train":
             self.x = torch.from_numpy(self.df_x[:nbTrain].to_numpy()).type(torch.FloatTensor)
             self.y = torch.from_numpy(self.df_y[:nbTrain].to_numpy()).type(torch.LongTensor).squeeze(1)

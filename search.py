@@ -7,27 +7,24 @@ from dataset import CustomDataset
 import numpy as np
 import sys
 """
-MEILLEUR PARAM DIABETES
+MEILLEUR PARAM DIABETES  78.71% sur test
 
-learning_rate = 0.001
-batch_size = 16
-dropout 0
+learning_rate = 0.01
+batch_size = 128
 """
 
 """
-MEILLEUR PARAM BREAST CANCER
-
-learning_rate = 0.001
-batch_size = 16
-dropout 0
-"""
-
-"""
-MEILLEUR PARAM HEART
+MEILLEUR PARAM BREAST CANCER 95.65% sur test
 
 learning_rate = 0.01
 batch_size = 64
-dropout 0.05
+"""
+
+"""
+MEILLEUR PARAM HEART 83.61% sur test
+
+learning_rate = 0.01
+batch_size = 64
 """
 
 """
@@ -40,8 +37,7 @@ dropout 0.2
 
 param_grid = {
     "learning_rate": [0.1, 0.01, 0.001, 0.0001],
-    "dropout": [0, 0.05, 0.1, 0.2],
-    "batch_size": [4, 8, 16, 32, 64, 128]
+    "batch_size": [64, 128, 256, 512]
 }
 
 if(len(sys.argv) < 2):
@@ -95,7 +91,7 @@ best_learning_rate = 0
 best_batch_size = 0
 for params in param_list:
     learning_rate = params["learning_rate"]
-    dropout = params["dropout"]
+    #dropout = params["dropout"]
     batch_size = params["batch_size"]
     train_loader = DataLoader(train_data, batch_size = batch_size, shuffle = True)
     valid_loader = DataLoader(valid_data, batch_size = batch_size, shuffle = True)
@@ -103,13 +99,13 @@ for params in param_list:
         
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    model = MLP(nb_features, nb_classe, dropout).to(device) #lancement modele
+    model = MLP(nb_features, nb_classe, 0).to(device) #lancement modele
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=0.00001)
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay = 0.000001)
     loss_fn = nn.CrossEntropyLoss()
     
     training_losses, valid_losses, accs = [],[],[]
-    epochs = 25
+    epochs = 250
 
     for epoch in range(epochs):
         model.train()
@@ -150,13 +146,13 @@ for params in param_list:
             print("Saving Model {:.4f} ---> {:.4f}".format(min_loss, valid_loss))
             best_learning_rate = learning_rate
             best_batch_size = batch_size
-            best_dropout = dropout
+            #best_dropout = dropout
             torch.save(model.state_dict(), path_model)
             min_loss = valid_loss
 
 print("batch_size", best_batch_size)
 print("learning_rate", best_learning_rate)
-print("dropout", best_dropout)
+#print("dropout", best_dropout)
 
 test_loader = DataLoader(test_data, batch_size = 1, shuffle = True)
 model = MLP(nb_features, nb_classe, best_dropout).to(device)

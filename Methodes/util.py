@@ -181,8 +181,7 @@ def generate_artificial_features(size, class_name, columns, features_type, discr
     return map(list, map(None, *artificial_data)), new_discrete, new_continuous
 
 
-def build_df2explain(bb, X, dataset):
-    
+def build_df2explain(bb, X, dataset): 
     columns = dataset['columns']
     features_type = dataset['features_type']
     discrete = dataset['discrete']
