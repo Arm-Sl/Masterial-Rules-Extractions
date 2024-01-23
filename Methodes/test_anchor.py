@@ -88,8 +88,8 @@ def main():
 
     X2E = X_test
     listf = list()
-    #for idx_record2explain in range(len(X2E)):
-    for idx_record2explain in range(140):  #on explique les 140 premiers exemples du dataset test (pour des raisons de temps de calcul) uniquement COVID
+    for idx_record2explain in range(len(X2E)):
+    #for idx_record2explain in range(140):  #on explique les 140 premiers exemples du dataset test (pour des raisons de temps de calcul) uniquement COVID
         class_name = dataset['class_name']
         columns = dataset['columns']
         continuous = dataset['continuous']
@@ -154,15 +154,23 @@ def main():
 
         # Get test examples where the anchor applies
         fit_anchor = np.where(np.all(X2E[:, exp.features()] == X2E[idx_record2explain][exp.features()], axis=1))[0]
-        #print('Anchor test coverage: %.2f' % (fit_anchor.shape[0] / float(X2E.shape[0])))
+        completeness_l = []
+        comppppp = []
+        completeness_l.append(fit_anchor.shape[0] / float(X2E.shape[0]))
+        comppppp.append(exp.coverage())
+        print('Anchor test coverage: %.2f' % (fit_anchor.shape[0] / float(X2E.shape[0]))) #completeness = coverage
         #print('Anchor test precision: %.2f' % (np.mean(blackbox.predict(X2E[fit_anchor]) ==  blackbox.predict(X2E[idx_record2explain].reshape(1, -1)))))
         raw_data = info['state']['raw_data']
         batch_size = len(raw_data) // 4
+        
 
         for i in range(0, len(raw_data), batch_size):
             batch = raw_data[i:i+batch_size]
             predictions = blackbox.predict(batch)
             #print(predictions)
+
+    print("Completeness :" ,np.mean(completeness_l))
+    print("Complet2x comme gauthier :" ,np.mean(comppppp))
 
     with open(os.path.join("./json", name_json_rules), 'w') as f:   #enregistrement des regles dans un fichier json
         json.dump(listf, f, cls=NpEncoder)
