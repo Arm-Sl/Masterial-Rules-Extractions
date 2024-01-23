@@ -1,5 +1,4 @@
-/venv/
-/__pycache__/
+venv/
+__pycache__/
 Methodes/__pycache__/
-/Methodes/anchor/__pycache__
 
