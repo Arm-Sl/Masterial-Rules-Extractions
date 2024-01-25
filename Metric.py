@@ -91,15 +91,19 @@ def Correctness(Dataset, Rulset):
 
     i = 0
     correct = 0
+    first = True
 
     with open("Data/" + Dataset + "/labels_" + Dataset + ".csv", newline='') as csvfile:
         loadData = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for row in loadData:
 
-            if i in label:
-                if int(row[0]) == label[i]:
-                    correct += 1
-            i += 1
+            if not first:
+                if i in label:
+                    if int(row[0]) == label[i]:
+                        correct += 1
+                i += 1
+            else:
+                first = False
 
     #print(correct, " instance corectement classifier sur ", total, " donc Completeness = ", correct / total)
     return correct / total
@@ -148,15 +152,18 @@ def Fidelity(Dataset, Rulset):
 
     i = 0
     correct = 0
+    first = True
 
-    with open("Data/" + Dataset + "/labels_" + Dataset + ".csv", newline='') as csvfile: #remplacer par les prédictions du model
+    with open("Data/" + Dataset + "/" + Dataset + "-predictions.csv", newline='') as csvfile: #remplacer par les prédictions du model
         loadData = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for row in loadData:
-
-            if i in label:
-                if int(row[0]) == label[i]:
-                    correct += 1
-            i += 1
+            if not first:
+                if i in label:
+                    if int(row[0]) == label[i]:
+                        correct += 1
+                i += 1
+            else:
+                first = False
 
     #print(correct, " instance corectement classifier sur ", total, " donc Completeness = ", correct / total)
     return correct / total
@@ -333,105 +340,105 @@ if __name__ == '__main__':
     dataset = "Covid-19"
     rulset = "anchor"
 
-    print(dataset, rulset)
-    print("Completeness = ", Completeness(dataset, rulset))
-    #print("Fidelity = ", Fidelity(dataset, rulset))
+    #print(dataset, rulset)
+    #print("Completeness = ", Completeness(dataset, rulset))
+    print("Fidelity = ", Fidelity(dataset, rulset))
     print("Correctness = ", Correctness(dataset, rulset))
-    print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    print("FractionOverlap = ", FractionOverlap(dataset, rulset))
+    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
+    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
+    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
+    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
+    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
 
     dataset = "Covid-19"
     rulset = "Lore"
 
     print(dataset, rulset)
-    print("Completeness = ", Completeness(dataset, rulset))
-    # print("Fidelity = ", Fidelity(dataset, rulset))
+    #print("Completeness = ", Completeness(dataset, rulset))
+    print("Fidelity = ", Fidelity(dataset, rulset))
     print("Correctness = ", Correctness(dataset, rulset))
-    print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    print("FractionOverlap = ", FractionOverlap(dataset, rulset))
+    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
+    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
+    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
+    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
+    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
 
     dataset = "breast-cancer"
     rulset = "anchor"
 
     print(dataset, rulset)
-    print("Completeness = ", Completeness(dataset, rulset))
-    # print("Fidelity = ", Fidelity(dataset, rulset))
+    #print("Completeness = ", Completeness(dataset, rulset))
+    print("Fidelity = ", Fidelity(dataset, rulset))
     print("Correctness = ", Correctness(dataset, rulset))
-    print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    print("FractionOverlap = ", FractionOverlap(dataset, rulset))
+    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
+    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
+    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
+    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
+    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
 
     dataset = "breast-cancer"
     rulset = "lore"
 
     print(dataset, rulset)
-    print("Completeness = ", Completeness(dataset, rulset))
-    # print("Fidelity = ", Fidelity(dataset, rulset))
+    #print("Completeness = ", Completeness(dataset, rulset))
+    print("Fidelity = ", Fidelity(dataset, rulset))
     print("Correctness = ", Correctness(dataset, rulset))
-    print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    print("FractionOverlap = ", FractionOverlap(dataset, rulset))
+    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
+    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
+    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
+    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
+    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
 
     dataset = "diabetes"
     rulset = "anchor"
 
     print(dataset, rulset)
-    print("Completeness = ", Completeness(dataset, rulset))
-    # print("Fidelity = ", Fidelity(dataset, rulset))
+    #print("Completeness = ", Completeness(dataset, rulset))
+    print("Fidelity = ", Fidelity(dataset, rulset))
     print("Correctness = ", Correctness(dataset, rulset))
-    print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    print("FractionOverlap = ", FractionOverlap(dataset, rulset))
+    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
+    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
+    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
+    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
+    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
 
     dataset = "diabetes"
     rulset = "lore"
 
     print(dataset, rulset)
-    print("Completeness = ", Completeness(dataset, rulset))
-    # print("Fidelity = ", Fidelity(dataset, rulset))
+    #print("Completeness = ", Completeness(dataset, rulset))
+    print("Fidelity = ", Fidelity(dataset, rulset))
     print("Correctness = ", Correctness(dataset, rulset))
-    print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    print("FractionOverlap = ", FractionOverlap(dataset, rulset))
+    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
+    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
+    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
+    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
+    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
 
     dataset = "heart"
     rulset = "anchor"
 
     print(dataset, rulset)
-    print("Completeness = ", Completeness(dataset, rulset))
-    # print("Fidelity = ", Fidelity(dataset, rulset))
+    #print("Completeness = ", Completeness(dataset, rulset))
+    print("Fidelity = ", Fidelity(dataset, rulset))
     print("Correctness = ", Correctness(dataset, rulset))
-    print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    print("FractionOverlap = ", FractionOverlap(dataset, rulset))
+    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
+    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
+    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
+    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
+    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
 
     dataset = "heart"
     rulset = "lore"
 
     print(dataset, rulset)
-    print("Completeness = ", Completeness(dataset, rulset))
-    # print("Fidelity = ", Fidelity(dataset, rulset))
+    #print("Completeness = ", Completeness(dataset, rulset))
+    print("Fidelity = ", Fidelity(dataset, rulset))
     print("Correctness = ", Correctness(dataset, rulset))
-    print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    print("FractionOverlap = ", FractionOverlap(dataset, rulset))
+    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
+    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
+    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
+    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
+    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
 
 
