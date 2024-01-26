@@ -87,14 +87,29 @@ def main():
     blackbox.eval()
 
     X2E = X_test
+    y2E = blackbox.predict(X2E)
     listf = list()
-    for idx_record2explain in range(len(X2E)):
-    #for idx_record2explain in range(140):  #on explique les 140 premiers exemples du dataset test (pour des raisons de temps de calcul) uniquement COVID
+    nb = len(X2E)
+    if sys.argv[1] == "covid":
+        nb = 140 #on explique les 140 premiers exemples du dataset test (pour des raisons de temps de calcul) uniquement COVID
+   
+    completeness_a = []
+    correctness_a = []
+    fidelity_a = []
+    robustness_a = []
+    number_of_rules_a = []
+    average_rule_length_a = []
+   
+    for idx_record2explain in range(nb):
+
         class_name = dataset['class_name']
         columns = dataset['columns']
         continuous = dataset['continuous']
         possible_outcomes = dataset['possible_outcomes']
         label_encoder = dataset['label_encoder']
+
+        dfX2E = build_df2explain(blackbox, X2E, dataset).to_dict('records') #aucune idéeeeee 
+
 
         feature_names = list(columns)
         feature_names.remove(class_name)
@@ -152,14 +167,40 @@ def main():
         #print('Precision: %.2f' % exp.precision())
         #print('Coverage: %.2f' % exp.coverage())
 
+        def eval(x, y):
+            return 1 if x == y else 0
+        
+        def count_zeros(arr):
+            arr = np.array(arr)
+            return arr.size - np.count_nonzero(arr)
+        
+        def perturb_data(data, delta=0.1):
+            return data + np.random.uniform(low=-delta, high=delta, size=data.shape)
+
+
         # Get test examples where the anchor applies
         fit_anchor = np.where(np.all(X2E[:, exp.features()] == X2E[idx_record2explain][exp.features()], axis=1))[0]
-        completeness_l = []
-        comppppp = []
-        completeness_l.append(fit_anchor.shape[0] / float(X2E.shape[0]))
-        comppppp.append(exp.coverage())
-        print('Anchor test coverage: %.2f' % (fit_anchor.shape[0] / float(X2E.shape[0]))) #completeness = coverage
-        #print('Anchor test precision: %.2f' % (np.mean(blackbox.predict(X2E[fit_anchor]) ==  blackbox.predict(X2E[idx_record2explain].reshape(1, -1)))))
+        completeness_a.append(fit_anchor.shape[0] / float(X2E.shape[0]))
+
+        precision = np.mean(blackbox.predict(X2E[fit_anchor]) ==  blackbox.predict(X2E[idx_record2explain].reshape(1, -1)))
+        correctness_a.append(precision)
+        
+        # Fidelity
+        # Prédictions de la règle sur l'ensemble de test
+        #f, _ = info["predict"](dfX2E)
+        # Comparaison de la prédiction à partir de la règle et de la prédiction du modèle sur l'ensemble de test
+        #fidel = [1-eval(y2E[idx], f[idx]) for idx in range(len(y2E))]
+        #fidelity_a.append(count_zeros(fidel) / len(X2E))
+
+
+        # Robustness
+        perturbed_data = perturb_data(X2E[idx_record2explain].reshape(1, -1))
+        fit_anchor_perturbed = np.where(np.all(perturbed_data[:, exp.features()] == X2E[idx_record2explain][exp.features()], axis=1))[0]
+        robustness = fit_anchor_perturbed.shape[0] / float(perturbed_data.shape[0])
+        robustness_a.append(robustness)
+
+
+
         raw_data = info['state']['raw_data']
         batch_size = len(raw_data) // 4
         
@@ -169,8 +210,11 @@ def main():
             predictions = blackbox.predict(batch)
             #print(predictions)
 
-    print("Completeness :" ,np.mean(completeness_l))
-    print("Complet2x comme gauthier :" ,np.mean(comppppp))
+    print("Completeness :" ,np.mean(completeness_a))
+    print("Correctness :", np.mean(correctness_a))
+    print("Fidelity :", np.mean(fidelity_a))
+    print("Robustness :", np.mean(robustness_a))
+
 
     with open(os.path.join("./json", name_json_rules), 'w') as f:   #enregistrement des regles dans un fichier json
         json.dump(listf, f, cls=NpEncoder)
