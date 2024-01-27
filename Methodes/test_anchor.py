@@ -9,11 +9,51 @@ from neighbor_generator import *
 import json
 from anchor import anchor_tabular
 from sklearn.model_selection import train_test_split
-
+from util import *
 warnings.filterwarnings("ignore")
 
 import numpy as np
 
+
+"""
+DIABETES
+Completeness : 0.1382714285714286
+Correctness : 0.9859394711986343
+Fidelity : 0.9795008418342369
+Robustness : 0.9758224894496653
+Number of rules : 1.0
+Average rule length : 2.7857142857142856
+"""
+
+"""
+BREAST
+Completeness : 0.32155526315789473
+Correctness : 0.9945519648621031
+Fidelity : 0.9954426993014279
+Robustness : 0.996305265768636
+Number of rules : 1.0
+Average rule length : 1.2894736842105263
+"""
+
+"""
+HEART
+Completeness : 0.1794918032786885
+Correctness : 0.9823644710913588
+Fidelity : 0.9849888186300768
+Robustness : 0.9838993692372385
+Number of rules : 1.0
+Average rule length : 2.3114754098360657
+"""
+
+"""
+COVID
+Completeness : 0.21504214285714288
+Correctness : 0.9995546420006852
+Fidelity : 0.9789392296130714
+Robustness : 0.9904190784361115
+Number of rules : 1.0
+Average rule length : 2.557142857142857
+"""
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.integer):
@@ -36,7 +76,7 @@ def main():
             name_json_info = "breast-cancer_info.json"
             name_json_rules = "breast-cancer_anchor_rules.json"
             name_model = "breast-cancer.pt"
-            model_dropout = 0.1
+            model_dropout = 0
             model_input_size = 30
             model_output_size = 2
             dataset = prepare_breast_cancer_dataset()
@@ -54,7 +94,7 @@ def main():
             name_json_info = "heart_info.json"
             name_json_rules = "heart_anchor_rules.json"
             name_model = "heart.pt"
-            model_dropout = 0.01
+            model_dropout = 0
             model_input_size = 13
             model_output_size = 2
             dataset = prepare_heart_dataset()
@@ -87,14 +127,29 @@ def main():
     blackbox.eval()
 
     X2E = X_test
+    y2E = blackbox.predict(X2E)
     listf = list()
-    for idx_record2explain in range(len(X2E)):
-    #for idx_record2explain in range(140):  #on explique les 140 premiers exemples du dataset test (pour des raisons de temps de calcul) uniquement COVID
+    nb = len(X2E)
+    if sys.argv[1] == "covid":
+        nb = 140 #on explique les 140 premiers exemples du dataset test (pour des raisons de temps de calcul) uniquement COVID
+   
+    completeness_a = []
+    correctness_a = []
+    fidelity_a = []
+    robustness_a = []
+    number_of_rules_a = []
+    average_rule_length_a = []
+   
+    for idx_record2explain in range(nb):
+
         class_name = dataset['class_name']
         columns = dataset['columns']
         continuous = dataset['continuous']
         possible_outcomes = dataset['possible_outcomes']
         label_encoder = dataset['label_encoder']
+
+        dfX2E = build_df2explain(blackbox, X2E, dataset).to_dict('records')
+
 
         feature_names = list(columns)
         feature_names.remove(class_name)
@@ -112,15 +167,12 @@ def main():
         torch.cuda.empty_cache()
 
         explainer.fit(X_train, y_train, X_test, y_test)
-
-        pred = possible_outcomes[blackbox.predict(X2E[idx_record2explain].reshape(1, -1))[0]]
+        pred = possible_outcomes[1 - blackbox.predict(X2E[idx_record2explain].reshape(1, -1))[0]]
         #print('Prediction: ', pred)
 
         exp, info = explainer.explain_instance(X2E[idx_record2explain].reshape(1, -1), blackbox.predict, threshold=0.95)
 
         #print('Anchor: %s' % (' AND '.join(exp.names())))
-        #print(exp.names())
-
         text = exp.names()
         res = list()
         for txt in text:   
@@ -131,10 +183,12 @@ def main():
                     t = float(t)
                 l.append(t)
             res.append(l)
-        #print(res)
+
 
         d=dict()
+        rule = {}
         for r in res:     #a partir de la liste de chaine de caractere res on transforme en dictionnaire de la forme {feature:[min,max]}
+            rule[r[0]] = r[1] + str(r[2])
             if type(r[0]) == float:
                 idx = info_json["feature_names"].index(r[2]) #on recupere l'indice de la feature dans le dataset
                 d[idx]=[r[0],r[4]]
@@ -146,31 +200,93 @@ def main():
                     d[idx]=[-np.inf,r[2]]
         d["label"]=pred
         listf.append(d)
-        #print(listf)
-
+        
 
         #print('Precision: %.2f' % exp.precision())
         #print('Coverage: %.2f' % exp.coverage())
+        
+        def is_satisfied(x, rule, discrete, features_type):
+            for col, val in rule.items():
+                if col in discrete:
+                    if str(x[col]).strip() != val:
+                        return False
+                else:
+                    if '<=' in val and '<' in val and val.find('<=') < val.find('<'):
+                        val = val.split(col)
+                        thr1 = float(val[0].replace('<=', ''))
+                        thr2 = float(val[1].replace('<', ''))
+                        if x[col] > thr1 or x[col] <= thr2:
+                            return False
+                    elif '<' in val and '<=' in val and val.find('<') < val.find('<='):
+                        val = val.split(col)
+                        thr1 = float(val[0].replace('<', ''))
+                        thr2 = float(val[1].replace('<=', ''))
+                        if x[col] >= thr1 or x[col] < thr2:
+                            return False
+                    elif '<=' in val:
+                        thr = float(val.replace('<=', ''))
+                        if x[col] > thr:
+                            return False
+                    elif '>' in val:
+                        thr = float(val.replace('>', ''))
+                        if x[col] <= thr:
+                            return False
+            return True
 
-        # Get test examples where the anchor applies
-        fit_anchor = np.where(np.all(X2E[:, exp.features()] == X2E[idx_record2explain][exp.features()], axis=1))[0]
-        completeness_l = []
-        comppppp = []
-        completeness_l.append(fit_anchor.shape[0] / float(X2E.shape[0]))
-        comppppp.append(exp.coverage())
-        print('Anchor test coverage: %.2f' % (fit_anchor.shape[0] / float(X2E.shape[0]))) #completeness = coverage
-        #print('Anchor test precision: %.2f' % (np.mean(blackbox.predict(X2E[fit_anchor]) ==  blackbox.predict(X2E[idx_record2explain].reshape(1, -1)))))
-        raw_data = info['state']['raw_data']
+
+        def get_covered(rule, X, dataset):
+            covered_indexes = list()
+            for i, x in enumerate(X):
+                if is_satisfied(x, rule, dataset['discrete'], dataset['features_type']):
+                    covered_indexes.append(i)
+            return covered_indexes
+        
+        def eval(x, y):
+            return 1 if x == y else 0
+        
+        def count_zeros(arr):
+            arr = np.array(arr)
+            return arr.size - np.count_nonzero(arr)
+        
+        def perturb_data(data, delta=0.1):
+            return data + np.random.uniform(low=-delta, high=delta, size=data.shape)
+
+        completeness_a.append(exp.coverage())
+        # Correctness
+        # Comparaison entre la classe original et la prédiction de la règle
+        covered = get_covered(rule, dfX2E, dataset)
+        correct = [1-eval(dfX2E[idx][dataset["class_name"]], info["prediction"]) for idx in covered]
+        correctness_a.append(count_zeros(correct) / len(covered))
+
+        # Fidelity
+        # Prédictions de la règle sur l'ensemble de test
+        # Comparaison de la prédiction à partir de la règle et de la prédiction du modèle sur l'ensemble de test
+        fidelity_a.append(exp.precision())
+
+        # Robustness
+        perturbed_data = perturb_data(X2E)
+        exp, info = explainer.explain_instance(perturbed_data[idx_record2explain].reshape(1, -1), blackbox.predict, threshold=0.95)
+        robustness_a.append(exp.precision())
+
+
+        number_of_rules_a.append(1)
+        average_rule_length_a.append(len(rule))
+
+        """raw_data = info['state']['raw_data']
         batch_size = len(raw_data) // 4
         
 
         for i in range(0, len(raw_data), batch_size):
             batch = raw_data[i:i+batch_size]
             predictions = blackbox.predict(batch)
-            #print(predictions)
+            #print(predictions)"""
 
-    print("Completeness :" ,np.mean(completeness_l))
-    print("Complet2x comme gauthier :" ,np.mean(comppppp))
+    print("Completeness :" ,np.mean(completeness_a))
+    print("Correctness :", np.mean(correctness_a))
+    print("Fidelity :", np.mean(fidelity_a))
+    print("Robustness :", np.mean(robustness_a))
+    print("Number of rules :" ,np.mean(number_of_rules_a))
+    print("Average rule length :" ,np.mean(average_rule_length_a))
 
     with open(os.path.join("./json", name_json_rules), 'w') as f:   #enregistrement des regles dans un fichier json
         json.dump(listf, f, cls=NpEncoder)

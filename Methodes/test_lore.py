@@ -47,6 +47,16 @@ Number of rules : 1.0
 Average rule length : 3.9508196721311477
 """
 
+"""
+COVID
+Completeness : 0.1599160583941606
+Correctness : 0.9862611704521688
+Fidelity : 0.7547901459854015
+Robustesse : 0.729463503649635
+Number of rules : 1.0
+Average rule length : 3.4963503649635035
+"""
+
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.integer):
@@ -68,7 +78,7 @@ def main():
             name_json_info = "breast-cancer_info.json"
             name_json_rules = "breast-cancer_lore_rules.json"
             name_model = "breast-cancer.pt"
-            model_dropout = 0.1
+            model_dropout = 0
             model_input_size = 30
             model_output_size = 2
             dataset = prepare_breast_cancer_dataset()
@@ -86,7 +96,7 @@ def main():
             name_json_info = "heart_info.json"
             name_json_rules = "heart_lore_rules.json"
             name_model = "heart.pt"
-            model_dropout = 0.01
+            model_dropout = 0
             model_input_size = 13
             model_output_size = 2
             dataset = prepare_heart_dataset()
@@ -142,8 +152,8 @@ def main():
         dfx = dfX2E[idx_record2explain]
         print('x = %s' % dfx)
         print('r = %s --> %s' % (explanation[0][1], explanation[0][0]))
+        #infos["dt_dot"].write_png("tree.png")
         rule = {}
-        
         for key, value in explanation[0][1].items():
             idx = info_json["feature_names"].index(key)
             supCount = value.count(">")
@@ -174,8 +184,8 @@ def main():
         """
         tree_path = infos['tree_path']
 
-        covered = lore.get_covered(explanation[0][1], dfX2E, dataset)       
-        #print(explanation[0][0][dataset['class_name']], '<<<<')
+        covered = lore.get_covered(explanation[0][1], dfX2E, dataset)
+
 
         def eval(x, y):
             return 1 if x == y else 0
