@@ -206,7 +206,7 @@ def run(rules, tr, oracle=None, generate=None,
     output_rules = glocalx.rules(alpha, tr_set)
 
     jsonized_rules = [rule.json() for rule in output_rules]
-    with open("GlocalX/jsonGlocalX/" + name + '.rules.glocalx.alpha=' + str(alpha) + '.json', 'w') as log:
+    with open("C:/Users/Quentin/Desktop/M2/git/Masterial/GlocalX/jsonGlocalX/" + name + '.rules.glocalx.alpha=' + str(alpha) + '.json', 'w') as log:
         json.dump(jsonized_rules, log)
 
 

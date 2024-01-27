@@ -333,112 +333,21 @@ def FractionOverlap(Dataset, Rulset):
 
             else: first = False
     #print("FractionOverlap = ", 2 / ((len(rules)) * (len(rules) - 1)) * (overlap / total))
+    if overlap == 0 : return 0
     return 2 / ((len(rules)) * (len(rules) - 1)) * (overlap / total)
 
-# Press the green button in the gutter to run the script.
+
 if __name__ == '__main__':
-    dataset = "Covid-19"
-    rulset = "anchor"
-
-    #print(dataset, rulset)
-    #print("Completeness = ", Completeness(dataset, rulset))
-    print("Fidelity = ", Fidelity(dataset, rulset))
-    print("Correctness = ", Correctness(dataset, rulset))
-    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
-
-    dataset = "Covid-19"
-    rulset = "Lore"
-
-    print(dataset, rulset)
-    #print("Completeness = ", Completeness(dataset, rulset))
-    print("Fidelity = ", Fidelity(dataset, rulset))
-    print("Correctness = ", Correctness(dataset, rulset))
-    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
-
-    dataset = "breast-cancer"
-    rulset = "anchor"
-
-    print(dataset, rulset)
-    #print("Completeness = ", Completeness(dataset, rulset))
-    print("Fidelity = ", Fidelity(dataset, rulset))
-    print("Correctness = ", Correctness(dataset, rulset))
-    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
-
     dataset = "breast-cancer"
     rulset = "lore"
 
     print(dataset, rulset)
-    #print("Completeness = ", Completeness(dataset, rulset))
+    print("Completeness = ", Completeness(dataset, rulset))
     print("Fidelity = ", Fidelity(dataset, rulset))
     print("Correctness = ", Correctness(dataset, rulset))
-    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
-
-    dataset = "diabetes"
-    rulset = "anchor"
-
-    print(dataset, rulset)
-    #print("Completeness = ", Completeness(dataset, rulset))
-    print("Fidelity = ", Fidelity(dataset, rulset))
-    print("Correctness = ", Correctness(dataset, rulset))
-    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
-
-    dataset = "diabetes"
-    rulset = "lore"
-
-    print(dataset, rulset)
-    #print("Completeness = ", Completeness(dataset, rulset))
-    print("Fidelity = ", Fidelity(dataset, rulset))
-    print("Correctness = ", Correctness(dataset, rulset))
-    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
-
-    dataset = "heart"
-    rulset = "anchor"
-
-    print(dataset, rulset)
-    #print("Completeness = ", Completeness(dataset, rulset))
-    print("Fidelity = ", Fidelity(dataset, rulset))
-    print("Correctness = ", Correctness(dataset, rulset))
-    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
-
-    dataset = "heart"
-    rulset = "lore"
-
-    print(dataset, rulset)
-    #print("Completeness = ", Completeness(dataset, rulset))
-    print("Fidelity = ", Fidelity(dataset, rulset))
-    print("Correctness = ", Correctness(dataset, rulset))
-    #print("Robustness = ", Robustness(dataset, rulset, 0.01))
-    #print("NumberOfRules = ", NumberOfRules(dataset, rulset))
-    #print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
-    #print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
-    #print("FractionOverlap = ", FractionOverlap(dataset, rulset))
-
+    print("Robustness = ", Robustness(dataset, rulset, 0.01))
+    print("NumberOfRules = ", NumberOfRules(dataset, rulset))
+    print("AverageRuleLength = ", AverageRuleLength(dataset, rulset))
+    print("FractionOfClasses = ", FractionOfClasses(dataset, rulset))
+    print("FractionOverlap = ", FractionOverlap(dataset, rulset))
 
