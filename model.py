@@ -12,11 +12,13 @@ class MLP(nn.Module):
         self.f_connected7 = nn.Linear(32, 16)
         self.out = nn.Linear(16, nb_classes)
         self.relu = nn.ReLU()
+        self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
         x = self.relu(self.f_connected1(x))
         x = self.relu(self.f_connected2(x))
         x = self.relu(self.f_connected3(x))
+        x = self.dropout(x)
         x = self.relu(self.f_connected6(x))
         x = self.relu(self.f_connected7(x))
         x = self.out(x)
