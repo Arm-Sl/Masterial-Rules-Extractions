@@ -136,7 +136,7 @@ def main():
     correctness_l = []
     fidelity_l = []
     robustesse_l = []
-    number_of_rules_l = []
+    number_of_rules_l = 0
     average_rule_length_l = []
     
     for idx_record2explain in range(nb):
@@ -221,14 +221,14 @@ def main():
             correctness_l.append(count_zeros(correct) / len(covered))
             fidelity_l.append(count_zeros(fidel) / len(X2E))
             robustesse_l.append(count_zeros(r) / len(X2E))
-            number_of_rules_l.append(1)
+            number_of_rules_l += 1
             average_rule_length_l.append(len(tree_path) - 1)
 
     print("Completeness :" ,np.mean(completeness_l))
     print("Correctness :" ,np.mean(correctness_l))
     print("Fidelity :" ,np.mean(fidelity_l))
     print("Robustesse :" ,np.mean(robustesse_l))
-    print("Number of rules :" ,np.mean(number_of_rules_l))
+    print("Number of rules :" ,number_of_rules_l)
     print("Average rule length :" ,np.mean(average_rule_length_l))
 
     with open(os.path.join("./json", name_json_rules), 'w') as f:

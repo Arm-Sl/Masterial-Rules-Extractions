@@ -137,7 +137,7 @@ def main():
     correctness_a = []
     fidelity_a = []
     robustness_a = []
-    number_of_rules_a = []
+    number_of_rules_a = 0
     average_rule_length_a = []
    
     for idx_record2explain in range(nb):
@@ -269,7 +269,7 @@ def main():
         robustness_a.append(exp.precision())
 
 
-        number_of_rules_a.append(1)
+        number_of_rules_a += 1
         average_rule_length_a.append(len(rule))
 
         """raw_data = info['state']['raw_data']
@@ -285,7 +285,7 @@ def main():
     print("Correctness :", np.mean(correctness_a))
     print("Fidelity :", np.mean(fidelity_a))
     print("Robustness :", np.mean(robustness_a))
-    print("Number of rules :" ,np.mean(number_of_rules_a))
+    print("Number of rules :" ,number_of_rules_a)
     print("Average rule length :" ,np.mean(average_rule_length_a))
 
     with open(os.path.join("./json", name_json_rules), 'w') as f:   #enregistrement des regles dans un fichier json
